@@ -23,4 +23,8 @@ public class RobotMap {
     //PWM Ports
     public static final int DRIVE_TRAIN_LEFT_JAGUAR = 1;
     public static final int DRIVE_TRAIN_RIGHT_JAGUAR = 2;
+    
+    //Solenoids
+    public static final int BROOM_ARM_LOWER_SOLENOID = 1;
+    public static final int BROOM_ARM_UPPER_SOLENOID = 2;
 }

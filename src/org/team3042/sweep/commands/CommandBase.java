@@ -1,8 +1,8 @@
 package org.team3042.sweep.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team3042.sweep.OI;
+import org.team3042.sweep.subsystems.BroomArm;
 import org.team3042.sweep.subsystems.DriveTrain;
 
 /**
@@ -16,6 +16,7 @@ public abstract class CommandBase extends Command {
     public static OI oi;
     // Create a single static instance of all of your subsystems
     public static DriveTrain driveTrain = new DriveTrain();
+    public static BroomArm broomArm = new BroomArm();
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
