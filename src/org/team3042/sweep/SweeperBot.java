@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team3042.sweep.commands.CommandBase;
 
 /**
@@ -25,11 +26,19 @@ public class SweeperBot extends IterativeRobot {
 
     Command autonomousCommand;
 
+    private String CALIBRATION_FILE_DIR = "";
+    private float CALIBRATION_OUTPUT_INTERVAL = 0.5f;
+    private double CALIBRATION_MOTOR_SPEED = 0;
+    private float CALIBRATION_LENGTH_IN_SECONDS = 5;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
+        SmartDashboard.putNumber("Calibration Length In Seconds", CALIBRATION_LENGTH_IN_SECONDS);
+        SmartDashboard.putString("Calibration File Dir", CALIBRATION_FILE_DIR);
+        SmartDashboard.putNumber("Calibration Motor Speed", CALIBRATION_MOTOR_SPEED);
+        SmartDashboard.putNumber("Calibration Output Interval", CALIBRATION_OUTPUT_INTERVAL);
         // instantiate the command used for the autonomous period
         //autonomousCommand = new ExampleCommand();
 

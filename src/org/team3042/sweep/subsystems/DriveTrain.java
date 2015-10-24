@@ -73,4 +73,12 @@ public class DriveTrain extends Subsystem {
         return (Math.abs(maxDSpeed) > Math.abs(goalValue - currentValue))? 
                 goalValue : maxDSpeed + currentValue;
     }
+    
+    public float getLeftEncoderSpeed(){
+        return 0;
+    }
+    
+    public float getRightEncoderSpeed(){
+        return 0;
+    }
 }
