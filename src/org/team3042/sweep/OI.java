@@ -2,6 +2,8 @@
 package org.team3042.sweep;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -16,6 +18,8 @@ public class OI {
     public Joystick stickRight = new Joystick(  RobotMap.RIGHT_JOY_USB_PORT_2);
     // Button button = new JoystickButton(stick, buttonNumber);
     
+    public Button lTrigger = new JoystickButton(stickLeft, 1);
+    public Button rTrigger = new JoystickButton(stickRight, 1);
     // Another type of button you can create is a DigitalIOButton, which is
     // a button or switch hooked up to the cypress module. These are useful if
     // you want to build a customized operator interface.
@@ -39,6 +43,6 @@ public class OI {
     
     // Start the command when the button is released  and let it run the command
     // until it is finished as determined by it's isFinished method.
-    // button.whenReleased(new ExampleCommand());
+    // button.whenReleased(new ExampleCommand());   
 }
 
