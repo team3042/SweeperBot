@@ -5,8 +5,7 @@
  */
 package org.team3042.sweep.subsystems;
 
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team3042.sweep.RobotMap;
 
@@ -18,8 +17,8 @@ public class BroomArm extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     
-    Solenoid upperSolenoid = new Solenoid(RobotMap.BROOM_ARM_UPPER_SOLENOID);
-    Solenoid lowerSolenoid = new Solenoid(RobotMap.BROOM_ARM_LOWER_SOLENOID);
+    Relay upperSolenoidSpike = new Relay(RobotMap.BROOM_ARM_UPPER_SOLENOID_SPIKE);
+    Relay lowerSolenoidSpike = new Relay(RobotMap.BROOM_ARM_LOWER_SOLENOID_SPIKE);
             
     boolean isRaised;   
 
@@ -29,19 +28,19 @@ public class BroomArm extends Subsystem {
     }
     
     public void sweep() {
-        upperSolenoid.set(false);
-        lowerSolenoid.set(false);
+        upperSolenoidSpike.set(Relay.Value.kOn);
+        lowerSolenoidSpike.set(Relay.Value.kOn);
     }
     
     public void raise() {
-        upperSolenoid.set(false);
-        lowerSolenoid.set(true);
+        upperSolenoidSpike.set(Relay.Value.kOn);
+        lowerSolenoidSpike.set(Relay.Value.kReverse);
         isRaised = true;
     }
     
     public void upperShake() {
-        upperSolenoid.set(true);
-        lowerSolenoid.set(true);
+        upperSolenoidSpike.set(Relay.Value.kReverse);
+        lowerSolenoidSpike.set(Relay.Value.kReverse);
         isRaised = false;
     }
     
