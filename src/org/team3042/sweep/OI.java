@@ -24,6 +24,9 @@ public class OI {
     public Button buttonArmSweep = new JoystickButton(stickRight, 4);
     public Button buttonArmShake = new JoystickButton(stickRight, 2);
     
+    public Button lTrigger = new JoystickButton(stickLeft, 1);
+    public Button rTrigger = new JoystickButton(stickRight, 1);
+    
     // Another type of button you can create is a DigitalIOButton, which is
     // a button or switch hooked up to the cypress module. These are useful if
     // you want to build a customized operator interface.

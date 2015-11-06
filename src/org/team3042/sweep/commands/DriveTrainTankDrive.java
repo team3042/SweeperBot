@@ -11,6 +11,9 @@ package org.team3042.sweep.commands;
  */
 public class DriveTrainTankDrive extends CommandBase {
     
+    private static double leftPower;
+    private static double rightPower;
+    
     public DriveTrainTankDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -23,6 +26,16 @@ public class DriveTrainTankDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+         leftPower = -oi.stickLeft.getY();
+        rightPower = -oi.stickRight.getY();
+        
+        if(oi.lTrigger.get()){
+            rightPower = leftPower;
+        }
+        else if (oi.rTrigger.get()){
+            leftPower = rightPower;
+        }
+        driveTrain.drive(leftPower, rightPower);
     }
 
     // Make this return true when this Command no longer needs to run execute()
