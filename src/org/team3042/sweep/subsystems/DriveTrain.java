@@ -39,6 +39,7 @@ public class DriveTrain extends Subsystem {
     public void stop() {
         leftMotor.set(0);
         rightMotor.set(0);
+        
     }
     
     public void drive(double left, double right) {
@@ -46,19 +47,19 @@ public class DriveTrain extends Subsystem {
     }
     
     private void setMotors(double left, double right) {
-        left = safetyTest(left);
-        right = safetyTest(right);
+       left = safetyTest(left);
+       right = safetyTest(right);
         
-        left = restrictAccel(leftMotor.get(), left);
-        right = restrictAccel(rightMotor.get(), right);
+        //left = restrictAccel(leftMotor.get(), left);
+        //right = restrictAccel(rightMotor.get(), right);
         
         leftMotor.set(left);
         rightMotor.set(right);
     }
     
     private double safetyTest(double motorValue) {
-        motorValue = (motorValue < -1)? -1:motorValue;
-        motorValue = (motorValue > 1)? 1:motorValue;
+        motorValue = (motorValue < -1) ? -1 : motorValue;
+        motorValue = (motorValue > 1) ? 1 : motorValue;
         
         return motorValue;
     }

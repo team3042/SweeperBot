@@ -24,7 +24,7 @@ import org.team3042.sweep.commands.CommandBase;
  */
 public class SweeperBot extends IterativeRobot {
 
-    Command autonomousCommand;
+    //Command autonomousCommand;
 
     private String CALIBRATION_FILE_DIR = "";
     private float CALIBRATION_OUTPUT_INTERVAL = 0.5f;
@@ -48,7 +48,7 @@ public class SweeperBot extends IterativeRobot {
 
     public void autonomousInit() {
         // schedule the autonomous command (example)
-        autonomousCommand.start();
+        //autonomousCommand.start();
     }
 
     /**
@@ -63,7 +63,7 @@ public class SweeperBot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        autonomousCommand.cancel();
+        //autonomousCommand.cancel();
     }
 
     /**

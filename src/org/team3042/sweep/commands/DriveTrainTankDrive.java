@@ -29,12 +29,14 @@ public class DriveTrainTankDrive extends CommandBase {
          leftPower = -oi.stickLeft.getY();
         rightPower = -oi.stickRight.getY();
         
+        /*
         if(oi.lTrigger.get()){
             rightPower = leftPower;
         }
         else if (oi.rTrigger.get()){
             leftPower = rightPower;
         }
+        */
         driveTrain.drive(leftPower, rightPower);
     }
 

@@ -3,6 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+/*
 package org.team3042.sweep.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,6 +13,7 @@ import org.team3042.sweep.subsystems.DriveTrain;
  *
  * @author admin
  */
+/*
 public class CalibrationCommand extends CommandBase {  
     //The system time at which we start
     private float timeStarted;
@@ -84,3 +87,4 @@ public class CalibrationCommand extends CommandBase {
         return getSystemTimeInSeconds()-timeStarted;
     }
 }
+*/
