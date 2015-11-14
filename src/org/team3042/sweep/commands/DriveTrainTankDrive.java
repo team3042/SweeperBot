@@ -5,6 +5,8 @@
  */
 package org.team3042.sweep.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  *
  * @author NewUser
@@ -37,6 +39,8 @@ public class DriveTrainTankDrive extends CommandBase {
             leftPower = rightPower;
         }
         */
+        SmartDashboard.putNumber("Left encoder", driveTrain.getLeftEncoder());
+        SmartDashboard.putNumber("Right encoder", driveTrain.getRightEncoder());
         driveTrain.drive(leftPower, rightPower);
     }
 
