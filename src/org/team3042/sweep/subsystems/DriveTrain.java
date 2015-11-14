@@ -5,6 +5,7 @@
  */
 package org.team3042.sweep.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -21,6 +22,11 @@ public class DriveTrain extends Subsystem {
 
     Jaguar leftMotor = new Jaguar(RobotMap.DRIVE_TRAIN_LEFT_JAGUAR);
     Jaguar rightMotor = new Jaguar(RobotMap.DRIVE_TRAIN_RIGHT_JAGUAR);
+    
+    Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_A_DIO, 
+            RobotMap.LEFT_ENCODER_B_DIO);
+    Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_A_DIO, 
+            RobotMap.RIGHT_ENCODER_B_DIO);
     
     //Inertial dampening
     Timer time = new Timer();
@@ -81,5 +87,13 @@ public class DriveTrain extends Subsystem {
     
     public float getRightEncoderSpeed(){
         return 0;
+    }
+    
+    public float getRightEncoder(){
+        return rightEncoder.get();
+    }
+    
+    public float getLeftEncoder(){
+        return leftEncoder.get();
     }
 }

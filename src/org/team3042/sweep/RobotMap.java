@@ -21,15 +21,19 @@ public class RobotMap {
     
     
     //PWM Ports
-    public static final int DRIVE_TRAIN_LEFT_JAGUAR = 1;
+    public static final int DRIVE_TRAIN_LEFT_JAGUAR = 3;
     public static final int DRIVE_TRAIN_RIGHT_JAGUAR = 2;
     
     //Relays
     public static final int BROOM_ARM_LOWER_SOLENOID_SPIKE = 1;
     public static final int BROOM_ARM_UPPER_SOLENOID_SPIKE = 2;
-    public static final int COMPRESSOR_SPIKE = 3;
+    public static final int COMPRESSOR_SPIKE = 6;
     
     //Digital IO Ports
-    public static final int COMPRESSOR_PRESSURE_SWITCH_DIO_PORT = 1;
+    public static final int COMPRESSOR_PRESSURE_SWITCH_DIO = 10;
+    public static final int LEFT_ENCODER_A_DIO = 3;
+    public static final int LEFT_ENCODER_B_DIO = 4;
+    public static final int RIGHT_ENCODER_A_DIO = 6;
+    public static final int RIGHT_ENCODER_B_DIO = 7;
 }
 

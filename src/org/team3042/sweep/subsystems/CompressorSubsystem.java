@@ -17,7 +17,7 @@ import org.team3042.sweep.RobotMap;
 public class CompressorSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    Compressor compressor = new Compressor(RobotMap.COMPRESSOR_PRESSURE_SWITCH_DIO_PORT, 
+    Compressor compressor = new Compressor(RobotMap.COMPRESSOR_PRESSURE_SWITCH_DIO, 
             RobotMap.COMPRESSOR_SPIKE);
    
     public void initDefaultCommand() {
