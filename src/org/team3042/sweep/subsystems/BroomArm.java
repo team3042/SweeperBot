@@ -28,13 +28,13 @@ public class BroomArm extends Subsystem {
     }
     
     public void sweep() {
-        upperSolenoidSpike.set(Relay.Value.kOn);
-        lowerSolenoidSpike.set(Relay.Value.kOn);
+        upperSolenoidSpike.set(Relay.Value.kOff);
+        lowerSolenoidSpike.set(Relay.Value.kOff);
     }
     
     public void raise() {
-        upperSolenoidSpike.set(Relay.Value.kOn);
-        lowerSolenoidSpike.set(Relay.Value.kReverse);
+        upperSolenoidSpike.set(Relay.Value.kOff);
+        lowerSolenoidSpike.set(Relay.Value.kForward);
         isRaised = true;
     }
     

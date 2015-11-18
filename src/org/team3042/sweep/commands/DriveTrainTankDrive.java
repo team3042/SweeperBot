@@ -28,8 +28,9 @@ public class DriveTrainTankDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-         leftPower = -oi.stickLeft.getY();
+        leftPower = -oi.stickLeft.getY();
         rightPower = -oi.stickRight.getY();
+        rightPower = 0;
         
         /*
         if(oi.lTrigger.get()){

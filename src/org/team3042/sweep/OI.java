@@ -20,9 +20,9 @@ public class OI {
     public Joystick stickLeft = new Joystick(  RobotMap.LEFT_JOY_USB_PORT_1);
     public Joystick stickRight = new Joystick(  RobotMap.RIGHT_JOY_USB_PORT_2);
     // Button button = new JoystickButton(stick, buttonNumber);
-    public Button buttonArmRaise = new JoystickButton(stickRight, 3);
-    public Button buttonArmSweep = new JoystickButton(stickRight, 4);
-    public Button buttonArmShake = new JoystickButton(stickRight, 2);
+    public Button buttonArmRaise = new JoystickButton(stickLeft, 3);
+    public Button buttonArmSweep = new JoystickButton(stickLeft, 4);
+    public Button buttonArmShake = new JoystickButton(stickLeft, 2);
     
     public Button lTrigger = new JoystickButton(stickLeft, 1);
     public Button rTrigger = new JoystickButton(stickRight, 1);

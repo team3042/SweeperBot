@@ -33,6 +33,10 @@ public class DriveTrain extends Subsystem {
     double oldTime = 0;
     double maxAccel = 1; //Percentage per second
     
+    //Motor Scaling
+    float leftScale = 1;
+    float rightScale = -1;
+    
     public DriveTrain() {
         time.start();
     }
@@ -53,11 +57,15 @@ public class DriveTrain extends Subsystem {
     }
     
     private void setMotors(double left, double right) {
-       left = safetyTest(left);
-       right = safetyTest(right);
         
         //left = restrictAccel(leftMotor.get(), left);
         //right = restrictAccel(rightMotor.get(), right);
+        
+        left *= leftScale;
+        right *= rightScale;
+        
+        left = safetyTest(left);
+        right = safetyTest(right);
         
         leftMotor.set(left);
         rightMotor.set(right);
