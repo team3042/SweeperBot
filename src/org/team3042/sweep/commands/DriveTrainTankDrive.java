@@ -30,16 +30,16 @@ public class DriveTrainTankDrive extends CommandBase {
     protected void execute() {
         leftPower = -oi.stickLeft.getY();
         rightPower = -oi.stickRight.getY();
-        rightPower = 0;
         
-        /*
+        
+        
         if(oi.lTrigger.get()){
             rightPower = leftPower;
         }
         else if (oi.rTrigger.get()){
             leftPower = rightPower;
         }
-        */
+        
         SmartDashboard.putNumber("Left encoder", driveTrain.getLeftEncoder());
         SmartDashboard.putNumber("Right encoder", driveTrain.getRightEncoder());
         driveTrain.drive(leftPower, rightPower);

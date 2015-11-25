@@ -39,13 +39,13 @@ public class BroomArm extends Subsystem {
     }
     
     public void upperShake() {
-        upperSolenoidSpike.set(Relay.Value.kReverse);
-        lowerSolenoidSpike.set(Relay.Value.kReverse);
+        upperSolenoidSpike.set(Relay.Value.kForward);
+        lowerSolenoidSpike.set(Relay.Value.kForward);
         isRaised = false;
     }
     
-    public void toggle() {
-        if (isRaised = true) {
+    public void toggleShake() {
+        if (isRaised) {
             upperShake();
         }
         else {

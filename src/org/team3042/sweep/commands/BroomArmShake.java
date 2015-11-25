@@ -21,21 +21,23 @@ public class BroomArmShake extends CommandBase {
     
     Timer time = new Timer();
     double oldTime = 0;
-    double delay = 0.5;
+    double delay = 0.1;
     double dTime;
    
     // Called just before this Command runs the first time
     protected void initialize() {
         broomArm.raise();
+        oldTime = 0;
         time.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        dTime = time.get() - oldTime;
+        double currentTime = time.get();
+        dTime = currentTime - oldTime;
         if(dTime > delay) {
-            broomArm.toggle();
-            oldTime = time.get();
+            broomArm.toggleShake();
+            oldTime = currentTime;
         }
         
     }
