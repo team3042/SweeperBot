@@ -30,15 +30,20 @@ public class DriveTrain extends Subsystem {
     
     //Inertial dampening
     Timer time = new Timer();
-    double oldTime = 0;
-    double maxAccel = 1; //Percentage per second
+    double oldTimeLeft = 0;
+    double oldTimeRight = 0;
+    double maxAccel = 0.33; //Percentage per second
     
     //Motor Scaling
-    float leftScale = 1;
-    float rightScale = -1;
+    double overallScale = 1.0;
+    double leftScale = 1 * overallScale;
+    double rightScale = -1 * overallScale;
     
     public DriveTrain() {
         time.start();
+        
+        leftEncoder.start();
+        rightEncoder.start();
     }
     
     public void initDefaultCommand() {
@@ -53,14 +58,13 @@ public class DriveTrain extends Subsystem {
     }
     
     public void drive(double left, double right) {
+        left = restrictAccel(leftMotor.get()/leftScale, left, false);
+        right = restrictAccel(rightMotor.get()/rightScale, right, true);
         setMotors(left, right);
     }
     
     private void setMotors(double left, double right) {
-        
-        //left = restrictAccel(leftMotor.get(), left);
-        //right = restrictAccel(rightMotor.get(), right);
-        
+                
         left *= leftScale;
         right *= rightScale;
         
@@ -78,10 +82,17 @@ public class DriveTrain extends Subsystem {
         return motorValue;
     }
     
-    private double restrictAccel(double currentValue, double goalValue) {
+    private double restrictAccel(double currentValue, double goalValue, boolean isRight) {
         double currentTime = time.get();
+        double oldTime = (isRight)? oldTimeRight : oldTimeLeft;
         double dt = currentTime - oldTime;
-        oldTime = currentTime;
+        if(isRight) {
+            oldTimeRight = currentTime;
+        }
+        else {
+            oldTimeLeft = currentTime;
+        }
+        
         double maxDSpeed = maxAccel * dt;
         maxDSpeed *= (goalValue >= currentValue)? 1 : -1;
         
@@ -102,6 +113,7 @@ public class DriveTrain extends Subsystem {
     }
     
     public float getLeftEncoder(){
+        System.out.println(leftEncoder.get());
         return leftEncoder.get();
     }
 }
