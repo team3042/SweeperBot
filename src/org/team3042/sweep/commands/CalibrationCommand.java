@@ -27,12 +27,13 @@ public class CalibrationCommand extends CommandBase {
         timer = new Timer();
         timer.start();
         
-        timeUntilEnd = (float)SmartDashboard.getNumber("Calibration_Length_In_Seconds");
+        timeUntilEnd = (float)SmartDashboard.getNumber("Calibration Length In Seconds");
     }
 
     // Called repeatedly when this Command is scheduled to run
     public float intervalTimer = 0;
     protected void execute() {
+                System.out.println("Hi"+timer.get());
         //Set the drivetrain to these speeds
         driveTrain.drive(SmartDashboard.getNumber("Calibration Motor Speed"),SmartDashboard.getNumber("Calibration Motor Speed"));
         

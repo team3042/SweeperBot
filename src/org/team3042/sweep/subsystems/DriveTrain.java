@@ -107,7 +107,6 @@ public class DriveTrain extends Subsystem {
     }
     
     public float getLeftEncoder(){
-        System.out.println(leftEncoder.get());
         return leftEncoder.get();
     }
 }
