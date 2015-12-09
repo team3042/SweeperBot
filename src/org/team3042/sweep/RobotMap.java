@@ -35,5 +35,11 @@ public class RobotMap {
     public static final int LEFT_ENCODER_B_DIO = 4;
     public static final int RIGHT_ENCODER_A_DIO = 6;
     public static final int RIGHT_ENCODER_B_DIO = 7;
+    
+    //Motor Stats
+    public static final int LEFT_MAX_ACCEL = 1;
+    public static final int RIGHT_MAX_ACCEL = 1;
+    public static final int LEFT_POWER_TO_SPEED = 1;
+    public static final int RIGHT_POWER_TO_SPEED = 1;
 }
 

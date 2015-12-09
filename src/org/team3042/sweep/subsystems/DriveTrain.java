@@ -71,6 +71,10 @@ public class DriveTrain extends Subsystem {
         rightMotor.set(right);
     }
     
+    public void autoDrive(double left) {
+        setMotors(left, 0);
+    }
+    
     private double safetyTest(double motorValue) {
         motorValue = (motorValue < -1) ? -1 : motorValue;
         motorValue = (motorValue > 1) ? 1 : motorValue;
@@ -97,11 +101,11 @@ public class DriveTrain extends Subsystem {
         return 0;
     }
     
-    public float getRightEncoder(){
+    public int getRightEncoder(){
         return rightEncoder.get();
     }
     
-    public float getLeftEncoder(){
+    public int getLeftEncoder(){
         return leftEncoder.get();
     }
 }
