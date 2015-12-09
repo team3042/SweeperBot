@@ -1,8 +1,6 @@
 /*
 *https://code.google.com/p/grtframework/source/browse/trunk/CurrentBot/src/com/grt192/utils/GRTFileIO.java
- 
-Test merging local with remote.
-*/
+ */
 package org.team3042.sweep.commands;
 
 import java.io.IOException;
