@@ -17,8 +17,6 @@ import org.team3042.sweep.commands.DriveTrainTankDrive;
  * @author NewUser
  */
 public class DriveTrain extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 
     Jaguar leftMotor = new Jaguar(RobotMap.DRIVE_TRAIN_LEFT_JAGUAR);
     Jaguar rightMotor = new Jaguar(RobotMap.DRIVE_TRAIN_RIGHT_JAGUAR);
@@ -29,9 +27,10 @@ public class DriveTrain extends Subsystem {
             RobotMap.RIGHT_ENCODER_B_DIO);
     
     //Inertial dampening
+    final int LEFT = 0;
+    final int RIGHT = 1;
     Timer time = new Timer();
-    double oldTimeLeft = 0;
-    double oldTimeRight = 0;
+    double[] oldTime = new double[] {0, 0};
     double maxAccel = 0.33; //Percentage per second
     
     //Motor Scaling
@@ -58,8 +57,9 @@ public class DriveTrain extends Subsystem {
     }
     
     public void drive(double left, double right) {
-        left = restrictAccel(leftMotor.get()/leftScale, left, false);
-        right = restrictAccel(rightMotor.get()/rightScale, right, true);
+        left = restrictAccel(leftMotor.get()/leftScale, left, LEFT);
+        right = restrictAccel(rightMotor.get()/rightScale, right, RIGHT);
+        
         setMotors(left, right);
     }
     
@@ -82,20 +82,14 @@ public class DriveTrain extends Subsystem {
         return motorValue;
     }
     
-    private double restrictAccel(double currentValue, double goalValue, boolean isRight) {
+    private double restrictAccel(double currentValue, double goalValue, int SIDE) {
         double currentTime = time.get();
-        double oldTime = (isRight)? oldTimeRight : oldTimeLeft;
-        double dt = currentTime - oldTime;
-        if(isRight) {
-            oldTimeRight = currentTime;
-        }
-        else {
-            oldTimeLeft = currentTime;
-        }
+        double dt = currentTime - oldTime[SIDE];
+        oldTime[SIDE] = currentTime;
         
         double maxDSpeed = maxAccel * dt;
         maxDSpeed *= (goalValue >= currentValue)? 1 : -1;
-        
+         
         return (Math.abs(maxDSpeed) > Math.abs(goalValue - currentValue))? 
                 goalValue : maxDSpeed + currentValue;
     }
@@ -112,8 +106,7 @@ public class DriveTrain extends Subsystem {
         return rightEncoder.get();
     }
     
-    public int getLeftEncoder(){
-        System.out.println(leftEncoder.get());
+    public float getLeftEncoder(){
         return leftEncoder.get();
     }
 }
