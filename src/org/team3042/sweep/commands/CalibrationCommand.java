@@ -3,21 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-/*
 package org.team3042.sweep.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team3042.sweep.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.Timer;
+
 /**
  *
  * @author admin
  */
-/*
 public class CalibrationCommand extends CommandBase {  
-    //The system time at which we start
-    private float timeStarted;
     private float timeUntilEnd;
+    
+    private Timer timer;
     
     public CalibrationCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -26,8 +24,10 @@ public class CalibrationCommand extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        timeStarted = getSystemTimeInSeconds();
-        timeUntilEnd = timeStarted+(float)SmartDashboard.getNumber("Calibration Length In Seconds");
+        timer = new Timer();
+        timer.start();
+        
+        timeUntilEnd = (float)SmartDashboard.getNumber("Calibration_Length_In_Seconds");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -37,19 +37,15 @@ public class CalibrationCommand extends CommandBase {
         driveTrain.drive(SmartDashboard.getNumber("Calibration Motor Speed"),SmartDashboard.getNumber("Calibration Motor Speed"));
         
         //Output the values at a certain interval
-        if(intervalTimer<=getSystemTimeInSeconds()){
+        if(intervalTimer<=timer.get()){
             outputCalibrationValuesToFile();
-            intervalTimer = getSystemTimeInSeconds()+(float)SmartDashboard.getNumber("Calibration Output Interval");
+            intervalTimer = (float)timer.get()+(float)SmartDashboard.getNumber("Calibration Output Interval");
         } 
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        //Time until end was the start system time added to the
-        //amount of time we wanted it to run. so like systemTime + 5 or something
-        //Therefore when time until end is LESS THAN SYSTEMTIME, then 5 seconds or whatever time you
-        //have added 
-        return timeUntilEnd<=getSystemTimeInSeconds();
+        return timeUntilEnd<=timer.get();
     }
 
     // Called once after isFinished returns true
@@ -68,23 +64,9 @@ public class CalibrationCommand extends CommandBase {
         String encoderValueLeft = Double.toString(driveTrain.getLeftEncoderSpeed());
         String encoderValueRight = Double.toString(driveTrain.getRightEncoderSpeed());
         
-        completeOutPut = "Set speed value: " + "("+SmartDashboard.getNumber("Calibration Motor Speed")+")"+" Encoder Values: "+"("+encoderValueLeft+","+encoderValueRight+")" + " Time Since Started: "+getTimeSinceStartedInSeconds();
+        completeOutPut = "Set speed value: " + "("+SmartDashboard.getNumber("Calibration Motor Speed")+")"+" Encoder Values: "+"("+encoderValueLeft+","+encoderValueRight+")" + " Time Since Started: "+timer.get();
         
         GRTFileIO.writeToFile(SmartDashboard.getString("Calibration File Dir"), completeOutPut);
         
     }
-    
-    //Gives the current system time, which can be a very high number, in seconds
-    //I believe that system time does NOT start at 0 which is why we have other 
-    //methods utilizing it to give an actual time since start.
-    private float getSystemTimeInSeconds(){
-        return System.currentTimeMillis()/1000;
-    }
-
-    //Gives the the seconds since the system has started
-    //THIS IS ONLY USED IN THE CALIBRATION OUTPUT
-    private float getTimeSinceStartedInSeconds(){
-        return getSystemTimeInSeconds()-timeStarted;
-    }
 }
-*/
