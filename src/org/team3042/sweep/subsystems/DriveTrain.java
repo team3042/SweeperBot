@@ -17,8 +17,6 @@ import org.team3042.sweep.commands.DriveTrainTankDrive;
  * @author NewUser
  */
 public class DriveTrain extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
 
     Jaguar leftMotor = new Jaguar(RobotMap.DRIVE_TRAIN_LEFT_JAGUAR);
     Jaguar rightMotor = new Jaguar(RobotMap.DRIVE_TRAIN_RIGHT_JAGUAR);
@@ -29,16 +27,22 @@ public class DriveTrain extends Subsystem {
             RobotMap.RIGHT_ENCODER_B_DIO);
     
     //Inertial dampening
+    final int LEFT = 0;
+    final int RIGHT = 1;
     Timer time = new Timer();
-    double oldTime = 0;
-    double maxAccel = 1; //Percentage per second
+    double[] oldTime = new double[] {0, 0};
+    double maxAccel = 0.33; //Percentage per second
     
     //Motor Scaling
-    float leftScale = 1;
-    float rightScale = -1;
+    double overallScale = 1.0;
+    double leftScale = 1 * overallScale;
+    double rightScale = -1 * overallScale;
     
     public DriveTrain() {
         time.start();
+        
+        leftEncoder.start();
+        rightEncoder.start();
     }
     
     public void initDefaultCommand() {
@@ -53,14 +57,14 @@ public class DriveTrain extends Subsystem {
     }
     
     public void drive(double left, double right) {
+        left = restrictAccel(leftMotor.get()/leftScale, left, LEFT);
+        right = restrictAccel(rightMotor.get()/rightScale, right, RIGHT);
+        
         setMotors(left, right);
     }
     
     private void setMotors(double left, double right) {
-        
-        //left = restrictAccel(leftMotor.get(), left);
-        //right = restrictAccel(rightMotor.get(), right);
-        
+                
         left *= leftScale;
         right *= rightScale;
         
@@ -82,13 +86,14 @@ public class DriveTrain extends Subsystem {
         return motorValue;
     }
     
-    private double restrictAccel(double currentValue, double goalValue) {
+    private double restrictAccel(double currentValue, double goalValue, int SIDE) {
         double currentTime = time.get();
-        double dt = currentTime - oldTime;
-        oldTime = currentTime;
+        double dt = currentTime - oldTime[SIDE];
+        oldTime[SIDE] = currentTime;
+        
         double maxDSpeed = maxAccel * dt;
         maxDSpeed *= (goalValue >= currentValue)? 1 : -1;
-        
+         
         return (Math.abs(maxDSpeed) > Math.abs(goalValue - currentValue))? 
                 goalValue : maxDSpeed + currentValue;
     }
