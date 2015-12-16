@@ -63,7 +63,7 @@ public class DriveTrain extends Subsystem {
         setMotors(left, right);
     }
     
-    private void setMotors(double left, double right) {
+    public void setMotors(double left, double right) {
                 
         left *= leftScale;
         right *= rightScale;
@@ -92,14 +92,6 @@ public class DriveTrain extends Subsystem {
          
         return (Math.abs(maxDSpeed) > Math.abs(goalValue - currentValue))? 
                 goalValue : maxDSpeed + currentValue;
-    }
-    
-    public float getLeftEncoderSpeed(){
-        return 0;
-    }
-    
-    public float getRightEncoderSpeed(){
-        return 0;
     }
     
     public int getRightEncoder(){
