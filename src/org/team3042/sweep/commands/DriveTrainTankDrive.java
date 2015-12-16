@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveTrainTankDrive extends CommandBase {
     
-    private static double leftPower;
-    private static double rightPower;
+    //Scale the joystick values to restrict maximum speed
+    private final double speedScale = 1.0;
     
     public DriveTrainTankDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -28,9 +28,8 @@ public class DriveTrainTankDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        leftPower = -oi.stickLeft.getY();
-        rightPower = -oi.stickRight.getY();
-        
+        double leftPower = -oi.stickLeft.getY() * speedScale;
+        double rightPower = -oi.stickRight.getY() * speedScale;
         
         
         if(oi.lTrigger.get()){

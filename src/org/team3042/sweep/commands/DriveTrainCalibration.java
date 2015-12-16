@@ -13,7 +13,7 @@ import org.team3042.sweep.FileIO;
  *
  * @author admin
  */
-public class CalibrationCommand extends CommandBase {
+public class DriveTrainCalibration extends CommandBase {
     //The time until we set motors to zero speed
     private double timeUntilMotorStop;
     
@@ -31,7 +31,7 @@ public class CalibrationCommand extends CommandBase {
     private final Timer timer = new Timer();
     private final FileIO fileIO = new FileIO();
     
-    public CalibrationCommand() {
+    public DriveTrainCalibration() {
         // Use requires() here to declare subsystem dependencies
         requires(driveTrain);
     }
