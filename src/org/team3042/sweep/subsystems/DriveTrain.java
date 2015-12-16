@@ -34,15 +34,22 @@ public class DriveTrain extends Subsystem {
     double maxAccel = 0.33; //Percentage per second
     
     //Motor Scaling
-    double overallScale = 1.0;
+    double overallScale = 0.5;
     double leftScale = 1 * overallScale;
     double rightScale = -1 * overallScale;
+    double encoderDistancePerPulse = 1;
     
     public DriveTrain() {
         time.start();
         
         leftEncoder.start();
         rightEncoder.start();
+        
+        leftEncoder.setDistancePerPulse(encoderDistancePerPulse);
+        rightEncoder.setDistancePerPulse(encoderDistancePerPulse);
+        leftEncoder.setReverseDirection(true);
+        
+        
     }
     
     public void initDefaultCommand() {
@@ -64,7 +71,6 @@ public class DriveTrain extends Subsystem {
     }
     
     public void setMotors(double left, double right) {
-                
         left *= leftScale;
         right *= rightScale;
         
@@ -94,11 +100,11 @@ public class DriveTrain extends Subsystem {
                 goalValue : maxDSpeed + currentValue;
     }
     
-    public int getRightEncoder(){
-        return rightEncoder.get();
+    public double getRightEncoder(){
+        return rightEncoder.getDistance();
     }
     
-    public float getLeftEncoder(){
-        return leftEncoder.get();
+    public double getLeftEncoder(){
+        return leftEncoder.getDistance();
     }
 }

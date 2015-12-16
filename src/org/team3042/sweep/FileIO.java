@@ -6,11 +6,8 @@ package org.team3042.sweep;
 
 import com.sun.squawk.microedition.io.FileConnection;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import javax.microedition.io.Connector;
-
-
 
 /**
  *
@@ -18,23 +15,21 @@ import javax.microedition.io.Connector;
  */
 public class FileIO {
     
-    FileConnection c;
+    FileConnection file;
     PrintStream writer;
     
     public void openFile(String filename) {
         String url = "file:///" + filename;
         try {
-            c = (FileConnection) Connector.open(url);
-            if (c.exists()) {
-                c.delete();
-                c.close();
-                c = (FileConnection) Connector.open(url);
+            file = (FileConnection) Connector.open(url);
+            if (file.exists()) {
+                file.delete();
+                //file.close();
+                //file = (FileConnection) Connector.open(url);
             }
-            c.create();
-            writer = new PrintStream(c.openOutputStream());
-        }   catch (IOException c) {
-            c.printStackTrace();
-        }
+            file.create();
+            writer = new PrintStream(file.openOutputStream());
+        }   catch (IOException ex) {}
     }
     
     public void writeToFile(String content) {
@@ -44,10 +39,8 @@ public class FileIO {
     
     public void closeFile() {
         try {
-            c.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+            file.close();
+        } catch (IOException ex) {}
     }
     
 }

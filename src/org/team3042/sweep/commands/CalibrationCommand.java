@@ -13,11 +13,23 @@ import org.team3042.sweep.FileIO;
  *
  * @author admin
  */
-public class CalibrationCommand extends CommandBase {  
-    private float timeUntilEnd;
+public class CalibrationCommand extends CommandBase {
+    //The time until we set motors to zero speed
+    private double timeUntilMotorStop;
     
-    private Timer timer;
-    FileIO fileIO = new FileIO();
+    //The time until the command finishes
+    //Allows time for robot to come to rest after motors are stopped
+    private double timeUntilCommandStop;
+    
+    //The alloted time in seconds for the robot to come to rest 
+    //after the motors shut off
+    private final double decelerationTime = 1.0;
+    
+    //Tracks whether the motors are set to move, or are stopped
+    private boolean motorsEngaged;
+    
+    private final Timer timer = new Timer();
+    private final FileIO fileIO = new FileIO();
     
     public CalibrationCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -26,44 +38,51 @@ public class CalibrationCommand extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        timer = new Timer();
+        timer.reset();
         timer.start();
         
-        fileIO.openFile(SmartDashboard.getString("Calibration File Dir"));
+        fileIO.openFile(SmartDashboard.getString("Calibration File Name"));
         
-        timeUntilEnd = (float)SmartDashboard.getNumber("Calibration Length In Seconds");
-    }
+        //Determine the time to stop motors and time to stop command
+        timeUntilMotorStop = (float)SmartDashboard.getNumber("Calibration Length In Seconds");
+        timeUntilCommandStop =timeUntilMotorStop + decelerationTime;
 
-    protected void execute() {
         //Set the drivetrain to these speeds
         driveTrain.setMotors(
                 SmartDashboard.getNumber("Calibration Motor Speed"),
                 SmartDashboard.getNumber("Calibration Motor Speed"));
-        
+        motorsEngaged = true;
+    }
+
+    protected void execute() {   
         outputCalibrationValuesToFile();
-        
+        if (motorsEngaged && (timer.get() >= timeUntilMotorStop)) {
+            driveTrain.setMotors(0.0, 0.0);
+            motorsEngaged = false;
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timeUntilEnd<=timer.get();
+        return timer.get() >= timeUntilCommandStop;
     }
 
     // Called once after isFinished returns true
     protected void end() {
         fileIO.closeFile();
+        timer.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
         fileIO.closeFile();
+        timer.stop();
     }
     
     private void outputCalibrationValuesToFile(){
         String completeOutPut;
         
-        //The actual speed values: what speed the encoders say we are actually at.
         String encoderValueLeft = Double.toString(driveTrain.getLeftEncoder());
         String encoderValueRight = Double.toString(driveTrain.getRightEncoder());
         
