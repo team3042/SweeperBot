@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.team3042.sweep.commands.BroomArmRaise;
 import org.team3042.sweep.commands.BroomArmShake;
 import org.team3042.sweep.commands.BroomArmSweep;
-import org.team3042.sweep.commands.CalibrationCommand;
+import org.team3042.sweep.commands.DriveTrainCalibration;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -58,7 +58,7 @@ public class OI {
         buttonArmShake.whileHeld(new BroomArmShake());
         buttonArmRaise.whenPressed(new BroomArmRaise());
         buttonArmSweep.whenPressed(new BroomArmSweep());
-        lb5.whenPressed(new CalibrationCommand());
+        lb5.whenPressed(new DriveTrainCalibration());
     }
 }
 
