@@ -11,7 +11,7 @@ package org.team3042.sweep.commands;
  */
 public class CorrectPID {
     double P = 0,I = 0,D = 0;
-    int ePrime = 0,E = 0;
+    double ePrime = 0,E = 0;
     public CorrectPID(double p, double i, double d){
         P = p;
         I = i;
@@ -23,8 +23,8 @@ public class CorrectPID {
         E = 0;
     }
     
-    public double correction(int encoderValue, int goalEncoderValue){
-        int e,de;
+    public double correction(double encoderValue, double goalEncoderValue){
+        double e,de;
         e = encoderValue - goalEncoderValue;
         de = e - ePrime;
         E += e;
