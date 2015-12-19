@@ -31,10 +31,10 @@ public class DriveTrain extends Subsystem {
     final int RIGHT = 1;
     Timer time = new Timer();
     double[] oldTime = new double[] {0, 0};
-    double maxAccel = 0.33; //Percentage per second
+    double maxAccel = 4.0; //Percentage per second
     
     //Motor Scaling
-    double overallScale = 0.5;
+    double overallScale = 0.75;
     double leftScale = 1 * overallScale;
     double rightScale = -1 * overallScale;
     double encoderDistancePerPulse = 1;
