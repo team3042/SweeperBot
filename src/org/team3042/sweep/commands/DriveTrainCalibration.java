@@ -38,10 +38,17 @@ public class DriveTrainCalibration extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        System.out.println("Drive Train Calibration Initialize");
+        
         timer.reset();
         timer.start();
         
         fileIO.openFile(SmartDashboard.getString("Calibration File Name"));
+        
+        //Creating header
+        
+        fileIO.writeToFile(Double.toString(SmartDashboard.getNumber("Calibration Motor Speed")));
+        fileIO.writeToFile("Time\tLeft\tRight\tLeft Speed\tRight Speed");
         
         //Determine the time to stop motors and time to stop command
         timeUntilMotorStop = (float)SmartDashboard.getNumber("Calibration Length In Seconds");
@@ -69,6 +76,7 @@ public class DriveTrainCalibration extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
+        System.out.println("Drive Train Calibration End");
         fileIO.closeFile();
         timer.stop();
     }
@@ -76,6 +84,7 @@ public class DriveTrainCalibration extends CommandBase {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        System.out.println("Drive Train Calibration Interrupted");
         fileIO.closeFile();
         timer.stop();
     }
@@ -86,12 +95,14 @@ public class DriveTrainCalibration extends CommandBase {
         String encoderValueLeft = Double.toString(driveTrain.getLeftEncoder());
         String encoderValueRight = Double.toString(driveTrain.getRightEncoder());
         
+        String encoderSpeedLeft = Double.toString(driveTrain.getLeftSpeed());
+        String encoderSpeedRight = Double.toString(driveTrain.getRightSpeed());
+        
         SmartDashboard.putNumber("Right encoder", driveTrain.getRightEncoder());
         SmartDashboard.putNumber("Left encoder", driveTrain.getLeftEncoder());
         
-        completeOutPut = "Set speed value: " + "("+SmartDashboard.getNumber("Calibration Motor Speed")
-                +")"+" Encoder Values: "+"("+encoderValueLeft+","+encoderValueRight+")" 
-                + " Time Since Started: "+timer.get();
+        completeOutPut = timer.get()+"\t"+encoderValueLeft+"\t"+encoderValueRight+
+                "\t"+encoderSpeedLeft+"\t"+encoderSpeedRight;
         
         fileIO.writeToFile(completeOutPut);
     }

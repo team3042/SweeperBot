@@ -25,9 +25,9 @@ public class SweeperBot extends IterativeRobot {
 
     //Command autonomousCommand;
 
-    private String CALIBRATION_FILE_DIR = "CalibrationFile";
-    private double CALIBRATION_MOTOR_SPEED = 0;
-    private float CALIBRATION_LENGTH_IN_SECONDS = 5;
+    private String CALIBRATION_FILE_NAME = "CalibrationFile";
+    private double CALIBRATION_MOTOR_SPEED = 0.25;
+    private float CALIBRATION_LENGTH_IN_SECONDS = 2;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -35,7 +35,7 @@ public class SweeperBot extends IterativeRobot {
     public void robotInit() {
         //Initialize the SmartDashboard
         SmartDashboard.putNumber("Calibration Length In Seconds", CALIBRATION_LENGTH_IN_SECONDS);
-        SmartDashboard.putString("Calibration File Dir", CALIBRATION_FILE_DIR);
+        SmartDashboard.putString("Calibration File Name", CALIBRATION_FILE_NAME);
         SmartDashboard.putNumber("Calibration Motor Speed", CALIBRATION_MOTOR_SPEED);
 
         // instantiate the command used for the autonomous period
