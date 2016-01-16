@@ -23,7 +23,7 @@ public class DriveTrainCalibration extends CommandBase {
     
     //The alloted time in seconds for the robot to come to rest 
     //after the motors shut off
-    private final double decelerationTime = 1.0;
+    private final double decelerationTime = 2.0;
     
     //Tracks whether the motors are set to move, or are stopped
     private boolean motorsEngaged;

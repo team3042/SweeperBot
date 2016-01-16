@@ -34,9 +34,8 @@ public class DriveTrain extends Subsystem {
     double maxAccel = 4.0; //Percentage per second
     
     //Motor Scaling
-    double overallScale = 0.75;
-    double leftScale = 1 * overallScale;
-    double rightScale = -1 * overallScale;
+    double leftScale = .9708;
+    double rightScale = -1;
     double encoderDistancePerPulse = 1;
     
     public DriveTrain() {
