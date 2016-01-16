@@ -107,4 +107,12 @@ public class DriveTrain extends Subsystem {
     public double getLeftEncoder(){
         return leftEncoder.getDistance();
     }
+    
+    public double getRightSpeed(){
+        return rightEncoder.getRate();
+    }
+    
+    public double getLeftSpeed(){
+        return leftEncoder.getRate();
+    }
 }

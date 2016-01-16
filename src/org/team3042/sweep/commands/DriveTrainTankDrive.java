@@ -31,7 +31,6 @@ public class DriveTrainTankDrive extends CommandBase {
         double leftPower = -oi.stickLeft.getY() * speedScale;
         double rightPower = -oi.stickRight.getY() * speedScale;
         
-        
         if(oi.lTrigger.get()){
             rightPower = leftPower;
         }
