@@ -28,6 +28,15 @@ public class SweeperBot extends IterativeRobot {
     private String CALIBRATION_FILE_DIR = "CalibrationFile";
     private double CALIBRATION_MOTOR_SPEED = 0;
     private float CALIBRATION_LENGTH_IN_SECONDS = 5;
+    
+    //Logger variables
+    private String LOGGER_FILE_DIR = "LoggerFile";
+    private int LOGGER_LEVEL = 1;
+    private boolean LOGGER_USE_CONSOLE = true;
+    private boolean LOGGER_USE_FILE = false;
+    
+    public static Logger logger = new Logger();
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -37,7 +46,10 @@ public class SweeperBot extends IterativeRobot {
         SmartDashboard.putNumber("Calibration Length In Seconds", CALIBRATION_LENGTH_IN_SECONDS);
         SmartDashboard.putString("Calibration File Dir", CALIBRATION_FILE_DIR);
         SmartDashboard.putNumber("Calibration Motor Speed", CALIBRATION_MOTOR_SPEED);
-
+        SmartDashboard.putString("Logger File Dir", LOGGER_FILE_DIR);
+        SmartDashboard.putNumber("Logger Level", LOGGER_LEVEL);
+        SmartDashboard.putBoolean("Logger Use Console", LOGGER_USE_CONSOLE);
+        SmartDashboard.putBoolean("Logger Use File", LOGGER_USE_FILE);
         // instantiate the command used for the autonomous period
         //autonomousCommand = new ExampleCommand();
 

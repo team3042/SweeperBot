@@ -12,16 +12,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author admi
  */
 public class Logger extends FileIO{
-    
-    public static Logger logger;
-    //Level 1-5, level 1 being the most important, and 0 meaning you dont want any messages
-    public Logger(String FileName){
-        
+
+
+    public Logger(){
+        //File location is stored on smartdashboard
+        this.openFile(SmartDashboard.getString("Logger File Dir"));
     }
     
-    
+    //Logs a string of information based on level set in drive station
+    //Uses level 1-5, level 1 being the least detailed, and 0 meaning you dont want any messages
+    //Uses booleans set in drive station to choose to log to IDE console, and or file
     public void log(String message, int level){
-        if(level<= SmartDashboard.getNumber("Logger Level")){
+        if(level>= SmartDashboard.getNumber("Logger Level")){
             if(SmartDashboard.getBoolean("Logger Use Console")){
                 System.out.println(message);
             }
