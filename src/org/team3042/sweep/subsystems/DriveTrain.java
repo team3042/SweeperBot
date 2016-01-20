@@ -134,7 +134,11 @@ public class DriveTrain extends Subsystem {
     }
     
     public double motorSpeedToEncoderTicks(double motorPower){
-        double encoder = 4319*motorPower - 425.65;
+        double encoder = Math.abs(4319*motorPower) - 425.65;
+        encoder = (encoder > 0)? encoder:0;
+        
+        encoder *= motorPower/Math.abs(motorPower);
+        
         return encoder;
     }
 }
