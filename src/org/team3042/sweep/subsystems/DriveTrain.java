@@ -123,4 +123,18 @@ public class DriveTrain extends Subsystem {
         rightEncoder.reset();
         leftEncoder.reset();
     }
+    
+    public double scaleLeft(double left){
+        left = 1.0197*left - 0.0697;
+        return left;
+    }
+    
+    public double scaleRight (double right) {
+        return right;
+    }
+    
+    public double motorSpeedToEncoderTicks(double motorPower){
+        double encoder = 4319*motorPower - 425.65;
+        return encoder;
+    }
 }
