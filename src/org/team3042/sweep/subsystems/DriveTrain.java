@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team3042.sweep.RobotMap;
 import org.team3042.sweep.commands.DriveTrainTankDrive;
 
@@ -34,7 +35,7 @@ public class DriveTrain extends Subsystem {
     double maxAccel = 4.0; //Percentage per second
     
     //Motor Scaling
-    double leftScale = .9708;
+    public double leftScale = 1;
     double rightScale = -1;
     double encoderDistancePerPulse = 1;
     
@@ -47,7 +48,6 @@ public class DriveTrain extends Subsystem {
         leftEncoder.setDistancePerPulse(encoderDistancePerPulse);
         rightEncoder.setDistancePerPulse(encoderDistancePerPulse);
         leftEncoder.setReverseDirection(true);
-        
         
     }
     
@@ -70,11 +70,15 @@ public class DriveTrain extends Subsystem {
     }
     
     public void setMotors(double left, double right) {
+        System.out.println(left + "\t" + leftScale);
+        
         left *= leftScale;
         right *= rightScale;
+        System.out.println(left + "\t" + leftScale);
         
         left = safetyTest(left);
         right = safetyTest(right);
+        System.out.println(left + "\t" + leftScale);
         
         leftMotor.set(left);
         rightMotor.set(right);
@@ -113,5 +117,10 @@ public class DriveTrain extends Subsystem {
     
     public double getLeftSpeed(){
         return leftEncoder.getRate();
+    }
+    
+    public void resetEncoders(){
+        rightEncoder.reset();
+        leftEncoder.reset();
     }
 }
