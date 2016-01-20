@@ -37,6 +37,7 @@ public class SweeperBot extends IterativeRobot {
         SmartDashboard.putNumber("Calibration Length In Seconds", CALIBRATION_LENGTH_IN_SECONDS);
         SmartDashboard.putString("Calibration File Name", CALIBRATION_FILE_NAME);
         SmartDashboard.putNumber("Calibration Motor Speed", CALIBRATION_MOTOR_SPEED);
+        SmartDashboard.putNumber("left scale", 1.0);
 
         // instantiate the command used for the autonomous period
         //autonomousCommand = new ExampleCommand();
