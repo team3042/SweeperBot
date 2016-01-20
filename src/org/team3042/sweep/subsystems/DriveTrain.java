@@ -32,11 +32,10 @@ public class DriveTrain extends Subsystem {
     final int RIGHT = 1;
     Timer time = new Timer();
     double[] oldTime = new double[] {0, 0};
+    double[] currentPower = new double[] {0,0};
     double maxAccel = 4.0; //Percentage per second
     
     //Motor Scaling
-    public double leftScale = 1;
-    double rightScale = -1;
     double encoderDistancePerPulse = 1;
     
     public DriveTrain() {
@@ -63,16 +62,16 @@ public class DriveTrain extends Subsystem {
     }
     
     public void drive(double left, double right) {
-        left = restrictAccel(leftMotor.get()/leftScale, left, LEFT);
-        right = restrictAccel(rightMotor.get()/rightScale, right, RIGHT);
-        
-        left = scaleLeft(left);
-        right = scaleRight(right);
+        left = restrictAccel(left, LEFT);
+        right = restrictAccel(right, RIGHT);
         
         setMotors(left, right);
     }
     
     public void setMotors(double left, double right) {
+        
+        left = scaleLeft(left);
+        right = scaleRight(right);
         
         left = safetyTest(left);
         right = safetyTest(right);
@@ -88,16 +87,17 @@ public class DriveTrain extends Subsystem {
         return motorValue;
     }
     
-    private double restrictAccel(double currentValue, double goalValue, int SIDE) {
+    private double restrictAccel (double goalValue, int SIDE) {
         double currentTime = time.get();
         double dt = currentTime - oldTime[SIDE];
         oldTime[SIDE] = currentTime;
         
         double maxDSpeed = maxAccel * dt;
-        maxDSpeed *= (goalValue >= currentValue)? 1 : -1;
+        maxDSpeed *= (goalValue >= currentPower[SIDE])? 1 : -1;
          
-        return (Math.abs(maxDSpeed) > Math.abs(goalValue - currentValue))? 
-                goalValue : maxDSpeed + currentValue;
+        currentPower[SIDE] = (Math.abs(maxDSpeed) > Math.abs(goalValue - currentPower[SIDE]))? 
+                goalValue : maxDSpeed + currentPower[SIDE];
+        return currentPower[SIDE];
     }
     
     public double getRightEncoder(){
@@ -127,10 +127,10 @@ public class DriveTrain extends Subsystem {
     }
     
     public double scaleRight (double right) {
-        return right;
+        return -right;
     }
     
-    public double motorSpeedToEncoderTicks(double motorPower){
+    public double motorPowerToEncoderTicks(double motorPower){
         double encoder = Math.abs(4319*motorPower) - 425.65;
         encoder = (encoder > 0)? encoder:0;
         
