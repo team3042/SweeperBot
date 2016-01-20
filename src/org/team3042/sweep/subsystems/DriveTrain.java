@@ -66,19 +66,16 @@ public class DriveTrain extends Subsystem {
         left = restrictAccel(leftMotor.get()/leftScale, left, LEFT);
         right = restrictAccel(rightMotor.get()/rightScale, right, RIGHT);
         
+        left = scaleLeft(left);
+        right = scaleRight(right);
+        
         setMotors(left, right);
     }
     
     public void setMotors(double left, double right) {
-        System.out.println(left + "\t" + leftScale);
-        
-        left *= leftScale;
-        right *= rightScale;
-        System.out.println(left + "\t" + leftScale);
         
         left = safetyTest(left);
         right = safetyTest(right);
-        System.out.println(left + "\t" + leftScale);
         
         leftMotor.set(left);
         rightMotor.set(right);
