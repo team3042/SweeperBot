@@ -6,13 +6,14 @@
 package org.team3042.sweep.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team3042.sweep.RobotMap;
 
 /**
  *
  * @author Ethan
  */
-public class AutoDrive extends CommandBase {
+public class AutoDriveStraight extends CommandBase {
     
     //Defining phases
     private int ACCEL = 0, MAINTAIN = 1, DECCEL = 2;
@@ -22,20 +23,22 @@ public class AutoDrive extends CommandBase {
     private double encoderStart, encoderAccelEnd, encoderMaintainEnd;
     
     //Establishing goals
-    private double goalSpeed = 0.5, goalAccel = 0.5, goalDistance = 1000;
+    private double goalSpeed = 0.5, goalDistance = 1000, goalAccel;
     
     //Current values
-    private double currentSpeed = 0, currentCorrectedSpeed = 0, goalCurrentDistance = 0;
+    private double currentSpeed = 0, currentSpeedLeft = 0,
+            currentSpeedRight = 0, currentCorrectedSpeedLeft = 0,
+            currentCorrectedSpeedRight = 0, goalCurrentDistanceLeft = 0, goalCurrentDistanceRight = 0;
     
     //Creating timer and variables for change in time
     Timer time = new Timer();
-    private double oldTime, dT;
+    private double oldTime = 0, dT = 0;
     
     //Creating PID values
     private double P = 0, I = 0, D = 0;
     private final CorrectPID correctPID = new CorrectPID(P, I, D);
     
-    public AutoDrive() {
+    public AutoDriveStraight() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(driveTrain);
@@ -50,22 +53,22 @@ public class AutoDrive extends CommandBase {
         encoderStart = driveTrain.getLeftEncoder();
         
         //Ensuring acceleration is within maximum
-        if(goalAccel > RobotMap.MAX_ACCEL_LEFT) {
-            goalAccel = RobotMap.MAX_ACCEL_LEFT;
-        }
+         goalAccel = RobotMap.MAX_ACCEL;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        dT = oldTime - time.get();
+        dT = time.get() - oldTime;
         oldTime = time.get();
         
         //Calculating expected distance traveled in last cycle
-        goalCurrentDistance += RobotMap.SPEED_LEFT * currentSpeed * dT;
+        goalCurrentDistanceLeft += driveTrain.motorPowerToEncoderTicks(currentSpeedLeft) * dT;
+        goalCurrentDistanceRight += driveTrain.motorPowerToEncoderTicks(currentSpeedRight)* dT;
         
         //Accelerating robot up to the goal speed
         if(phase == ACCEL && currentSpeed < goalSpeed) {
             if(currentSpeed + goalAccel * dT < goalSpeed) {
+                System.out.println("Accelerating!");
                 currentSpeed += goalAccel * dT;
             }
             else {
@@ -92,17 +95,28 @@ public class AutoDrive extends CommandBase {
             }
         }
         
+        //Scaling speeds of each side
+        currentSpeedLeft = driveTrain.scaleLeft(currentSpeed);
+        currentSpeedRight = driveTrain.scaleRight(currentSpeed);
+        
         //Running current values through PID and outputting to motors
-        currentCorrectedSpeed = correctPID.correction(
-                driveTrain.getLeftEncoder(), goalCurrentDistance + encoderStart)
-                + currentSpeed;
-        driveTrain.setMotors(currentCorrectedSpeed, 0);
+        currentCorrectedSpeedLeft = correctPID.correction(
+                driveTrain.getLeftEncoder(), goalCurrentDistanceLeft + encoderStart)
+                + currentSpeedLeft;
+        currentCorrectedSpeedRight = correctPID.correction(
+                driveTrain.getRightEncoder(), goalCurrentDistanceRight + encoderStart)
+                + currentSpeedRight;
+        
+        SmartDashboard.putNumber("Left Encoder", driveTrain.getLeftEncoder());
+        SmartDashboard.putNumber("Right Encoder", driveTrain.getRightEncoder());
+        
+        driveTrain.setMotorsRaw(currentCorrectedSpeedLeft, currentCorrectedSpeedRight);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         //Raturns true if robot has completed all three phases and stopped
-        return (phase == DECCEL && currentCorrectedSpeed == 0);
+        return (phase == DECCEL && currentCorrectedSpeedLeft == 0 && currentCorrectedSpeedRight == 0);
     }
 
     // Called once after isFinished returns true

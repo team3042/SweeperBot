@@ -4,6 +4,7 @@ package org.team3042.sweep;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.team3042.sweep.commands.AutoDriveStraight;
 import org.team3042.sweep.commands.BroomArmRaise;
 import org.team3042.sweep.commands.BroomArmShake;
 import org.team3042.sweep.commands.BroomArmSweep;
@@ -29,6 +30,8 @@ public class OI {
     public Button rTrigger = new JoystickButton(stickRight, 1);
     
     public Button lb5 = new JoystickButton(stickLeft, 5);
+    
+    public Button buttonAutoStraight = new JoystickButton(stickLeft, 6);
     
     // Another type of button you can create is a DigitalIOButton, which is
     // a button or switch hooked up to the cypress module. These are useful if
@@ -59,6 +62,7 @@ public class OI {
         buttonArmRaise.whenPressed(new BroomArmRaise());
         buttonArmSweep.whenPressed(new BroomArmSweep());
         lb5.whenPressed(new DriveTrainCalibration());
+        buttonAutoStraight.whenPressed(new AutoDriveStraight());
     }
 }
 

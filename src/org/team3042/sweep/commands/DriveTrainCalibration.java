@@ -40,7 +40,7 @@ public class DriveTrainCalibration extends CommandBase {
     protected void initialize() {
         driveTrain.resetEncoders();
         
-        driveTrain.leftScale = SmartDashboard.getNumber("left scale");
+        
 
         System.out.println("Drive Train Calibration Initialize");
         

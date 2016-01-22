@@ -37,11 +37,9 @@ public class RobotMap {
     public static final int RIGHT_ENCODER_B_DIO = 2;
     
     //Max acceleration of motors in speed increase per second
-    public static final double MAX_ACCEL_LEFT = 0.5;
-    public static final double MAX_ACCEL_RIGHT = 0.5;
+    public static final double MAX_ACCEL = 0.25;
     
     //Speed of motors in encoder ticks per second at a speed
-    public static final double SPEED_LEFT = 10;
-    public static final double SPEED_RIGHT = 10;
+    //public static final double SPEED_RIGHT = 10;
 }
 

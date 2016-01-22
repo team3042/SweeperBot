@@ -80,6 +80,15 @@ public class DriveTrain extends Subsystem {
         rightMotor.set(right);
     }
     
+    //Motor setting used exclusively in motion planning autonomous
+    public void setMotorsRaw (double left, double right) {
+        left = safetyTest(left);
+        right = safetyTest(right);
+        
+        leftMotor.set(left);
+        rightMotor.set(right);
+    }
+    
     private double safetyTest(double motorValue) {
         motorValue = (motorValue < -1) ? -1 : motorValue;
         motorValue = (motorValue > 1) ? 1 : motorValue;
