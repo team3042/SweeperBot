@@ -105,7 +105,7 @@ public class DriveTrain extends Subsystem {
     }
     
     public double scaleLeft(double left){
-        left = 1.0197*left - 0.0697;
+        left = (left > .07) ? 1.0197*left - 0.0697 : left;
         return left;
     }
     
@@ -114,11 +114,8 @@ public class DriveTrain extends Subsystem {
     }
     
     public double motorPowerToEncoderTicks(double motorPower){
-        double encoder = Math.abs(4319*motorPower) - 425.65;
-        encoder = (encoder > 0)? encoder:0;
-        
-        encoder *= motorPower/Math.abs(motorPower);
-        
+        double encoder = (motorPower > .2) ? 4404*(motorPower - 0.165): 0;
+                
         return encoder;
     }
 }

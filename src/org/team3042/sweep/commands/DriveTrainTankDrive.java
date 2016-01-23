@@ -43,8 +43,8 @@ public class DriveTrainTankDrive extends CommandBase {
         double leftPower = -oi.stickLeft.getY() * speedScale;
         double rightPower = -oi.stickRight.getY() * speedScale;
         
-        restrictAccel(leftPower, LEFT);
-        restrictAccel(rightPower, RIGHT);
+        leftPower = restrictAccel(leftPower, LEFT);
+        rightPower = restrictAccel(rightPower, RIGHT);
         
         if(oi.lTrigger.get()){
             rightPower = leftPower;

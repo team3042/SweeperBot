@@ -16,28 +16,29 @@ import org.team3042.sweep.RobotMap;
 public class AutoDriveStraight extends CommandBase {
     
     //Defining phases
-    private int ACCEL = 0, MAINTAIN = 1, DECCEL = 2;
+    private int ACCEL = 0, MAINTAIN = 1, DECCEL = 2, STOP = 3;
     private int phase = 0;
-    
-    //Encoder values at specific points
-    private double encoderStart, encoderAccelEnd, encoderMaintainEnd;
-    
-    //Establishing goals
-    private double goalSpeed = 0.5, goalDistance = 1000, goalAccel;
-    
-    //Current values
-    private double currentSpeed = 0, currentSpeedLeft = 0,
-            currentSpeedRight = 0, currentCorrectedSpeedLeft = 0,
-            currentCorrectedSpeedRight = 0, goalCurrentDistanceLeft = 0, goalCurrentDistanceRight = 0;
     
     //Creating timer and variables for change in time
     Timer time = new Timer();
     private double oldTime = 0, dT = 0;
     
     //Creating PID values
-    private double P = 0, I = 0, D = 0;
+    private double P = 0.0003, I = 0, D = 0;
     private final CorrectPID correctPID = new CorrectPID(P, I, D);
     
+    //Encoder values at specific points
+    private double leftEncoderStart = 0, rightEncoderStart = 0;
+    
+    //Goal Values each cycle
+    private double goalSpeed, goalDistance;
+    
+    //The goal speed and distance for the MAINTAIN phase
+    final private double MAINTAIN_SPEED = 0.5, MAINTAIN_DISTANCE = 10000;
+
+    //Maximum Acceleration
+    final private double MAX_ACCEL = 0.25 * ((MAINTAIN_SPEED >= 0) ? 1 : -1);
+        
     public AutoDriveStraight() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -45,78 +46,75 @@ public class AutoDriveStraight extends CommandBase {
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    protected void initialize() {    
         time.reset();
         time.start();
+        oldTime = 0;
+        
+        phase = ACCEL;
+        goalSpeed = .2;
+        goalDistance = 0;
+        correctPID.reset();
         
         //Getting initial encoder values
-        encoderStart = driveTrain.getLeftEncoder();
-        
-        //Ensuring acceleration is within maximum
-         goalAccel = RobotMap.MAX_ACCEL;
+        leftEncoderStart = driveTrain.getLeftEncoder();
+        rightEncoderStart = driveTrain.getRightEncoder();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        dT = time.get() - oldTime;
-        oldTime = time.get();
+        //Get the total distance traveled.
+        double leftEncoder = driveTrain.getLeftEncoder() - leftEncoderStart;
+        double rightEncoder = driveTrain.getRightEncoder() -rightEncoderStart;
         
-        //Calculating expected distance traveled in last cycle
-        goalCurrentDistanceLeft += driveTrain.motorPowerToEncoderTicks(currentSpeedLeft) * dT;
-        goalCurrentDistanceRight += driveTrain.motorPowerToEncoderTicks(currentSpeedRight)* dT;
+        SmartDashboard.putNumber("Left encoder", leftEncoder);
+        SmartDashboard.putNumber("Right encoder", rightEncoder);
         
-        //Accelerating robot up to the goal speed
-        if(phase == ACCEL && currentSpeed < goalSpeed) {
-            if(currentSpeed + goalAccel * dT < goalSpeed) {
-                System.out.println("Accelerating!");
-                currentSpeed += goalAccel * dT;
-            }
-            else {
-                currentSpeed = goalSpeed;
+        SmartDashboard.putNumber("Encoder Difference", leftEncoder - rightEncoder);
+        
+        //Determine the PID correction
+        double leftPID = correctPID.correction(leftEncoder, goalDistance);
+        double rightPID = correctPID.correction(rightEncoder, goalDistance);
+        
+        SmartDashboard.putNumber("Left PID", leftPID);
+        SmartDashboard.putNumber("Right PID", rightPID);
+                
+        
+        //Set the motor values
+        driveTrain.setMotors(goalSpeed + leftPID, goalSpeed + rightPID);
+        
+        //Determine the time interval
+        double currentTime = time.get();
+        dT = currentTime - oldTime;
+        oldTime = currentTime;
+       
+        //Determine velocity for the next cycle.
+        if(phase == ACCEL) {
+            goalSpeed += dT * MAX_ACCEL;
+            if (goalSpeed > MAINTAIN_SPEED){
                 phase = MAINTAIN;
-                encoderAccelEnd = driveTrain.getLeftEncoder() - encoderStart;
-                encoderMaintainEnd = goalDistance - encoderAccelEnd;
+                goalSpeed = MAINTAIN_SPEED;
             }
         }
-        
-        //Ending maintain phase after encoder has reached a threshold
-        if(phase == MAINTAIN && driveTrain.getLeftEncoder() >= 
-                encoderMaintainEnd + encoderStart) {
+        if (goalDistance >= MAINTAIN_DISTANCE) {
             phase = DECCEL;
         }
-        
-        //Deccelerating robot to a stop
-        if(phase == DECCEL && currentSpeed > 0) {
-            if(currentSpeed - goalAccel * dT > 0) {
-                currentSpeed -= goalAccel * dT;
-            }
-            else {
-                currentSpeed = 0;
+        if (phase == DECCEL) {
+            goalSpeed -= dT * MAX_ACCEL;
+            if (goalSpeed < 0){
+                phase = STOP;
+                goalSpeed = 0;
             }
         }
-        
-        //Scaling speeds of each side
-        currentSpeedLeft = driveTrain.scaleLeft(currentSpeed);
-        currentSpeedRight = driveTrain.scaleRight(currentSpeed);
-        
-        //Running current values through PID and outputting to motors
-        currentCorrectedSpeedLeft = correctPID.correction(
-                driveTrain.getLeftEncoder(), goalCurrentDistanceLeft + encoderStart)
-                + currentSpeedLeft;
-        currentCorrectedSpeedRight = correctPID.correction(
-                driveTrain.getRightEncoder(), goalCurrentDistanceRight + encoderStart)
-                + currentSpeedRight;
-        
-        SmartDashboard.putNumber("Left Encoder", driveTrain.getLeftEncoder());
-        SmartDashboard.putNumber("Right Encoder", driveTrain.getRightEncoder());
-        
-        driveTrain.setMotorsRaw(currentCorrectedSpeedLeft, currentCorrectedSpeedRight);
+
+        //Determine goal distance for next cycle
+        goalDistance += dT * driveTrain.motorPowerToEncoderTicks(goalSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        //Raturns true if robot has completed all three phases and stopped
-        return (phase == DECCEL && currentCorrectedSpeedLeft == 0 && currentCorrectedSpeedRight == 0);
+        //Returns true if robot has completed all three phases and stopped
+        return phase == STOP;
     }
 
     // Called once after isFinished returns true

@@ -25,11 +25,11 @@ public class CorrectPID {
     
     public double correction(double encoderValue, double goalEncoderValue){
         double e,de;
-        e = encoderValue - goalEncoderValue;
+        e = goalEncoderValue - encoderValue;
         de = e - ePrime;
         E += e;
         ePrime = e;
-        
+                
         return (P * e) + (D * de) + (I * E);
     }
 }
