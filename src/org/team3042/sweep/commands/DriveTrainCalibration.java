@@ -68,7 +68,7 @@ public class DriveTrainCalibration extends CommandBase {
     protected void execute() {   
         outputCalibrationValuesToFile();
         if (motorsEngaged && (timer.get() >= timeUntilMotorStop)) {
-            driveTrain.setMotors(0.0, 0.0);
+            driveTrain.setMotorsRaw(0.0, 0.0);
             motorsEngaged = false;
         }
     }

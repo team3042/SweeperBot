@@ -7,9 +7,7 @@ package org.team3042.sweep.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team3042.sweep.RobotMap;
 import org.team3042.sweep.commands.DriveTrainTankDrive;
 
@@ -27,20 +25,11 @@ public class DriveTrain extends Subsystem {
     Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_A_DIO, 
             RobotMap.RIGHT_ENCODER_B_DIO);
     
-    //Inertial dampening
-    final int LEFT = 0;
-    final int RIGHT = 1;
-    Timer time = new Timer();
-    double[] oldTime = new double[] {0, 0};
-    double[] currentPower = new double[] {0,0};
-    double maxAccel = 4.0; //Percentage per second.
     
     //Motor Scaling
     double encoderDistancePerPulse = 1;
     
     public DriveTrain() {
-        time.start();
-        
         leftEncoder.start();
         rightEncoder.start();
         
@@ -62,9 +51,6 @@ public class DriveTrain extends Subsystem {
     }
     
     public void drive(double left, double right) {
-        left = restrictAccel(left, LEFT);
-        right = restrictAccel(right, RIGHT);
-        
         setMotors(left, right);
     }
     
@@ -96,18 +82,6 @@ public class DriveTrain extends Subsystem {
         return motorValue;
     }
     
-    private double restrictAccel (double goalValue, int SIDE) {
-        double currentTime = time.get();
-        double dt = currentTime - oldTime[SIDE];
-        oldTime[SIDE] = currentTime;
-        
-        double maxDSpeed = maxAccel * dt;
-        maxDSpeed *= (goalValue >= currentPower[SIDE])? 1 : -1;
-         
-        currentPower[SIDE] = (Math.abs(maxDSpeed) > Math.abs(goalValue - currentPower[SIDE]))? 
-                goalValue : maxDSpeed + currentPower[SIDE];
-        return currentPower[SIDE];
-    }
     
     public double getRightEncoder(){
         return rightEncoder.getDistance();
