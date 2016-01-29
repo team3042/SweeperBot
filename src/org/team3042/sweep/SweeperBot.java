@@ -37,7 +37,10 @@ public class SweeperBot extends IterativeRobot {
         SmartDashboard.putNumber("Calibration Length In Seconds", CALIBRATION_LENGTH_IN_SECONDS);
         SmartDashboard.putString("Calibration File Name", CALIBRATION_FILE_NAME);
         SmartDashboard.putNumber("Calibration Motor Speed", CALIBRATION_MOTOR_SPEED);
-
+        SmartDashboard.putNumber("P value", .004);
+        SmartDashboard.putNumber("Maintain distance", 1000);
+        SmartDashboard.putNumber("Maintain speed", .3);
+        
         // instantiate the command used for the autonomous period
         //autonomousCommand = new ExampleCommand();
 
@@ -63,6 +66,7 @@ public class SweeperBot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         //autonomousCommand.cancel();
+        Scheduler.getInstance().run();
     }
 
     /**
@@ -78,4 +82,11 @@ public class SweeperBot extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
+    
+    /*
+    public void disabledInit(){
+        Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().disable();
+    }
+    */
 }
