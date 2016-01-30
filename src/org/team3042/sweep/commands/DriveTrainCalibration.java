@@ -40,8 +40,6 @@ public class DriveTrainCalibration extends CommandBase {
     protected void initialize() {
         driveTrain.resetEncoders();
         
-        
-
         System.out.println("Drive Train Calibration Initialize");
         
         timer.reset();

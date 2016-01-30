@@ -18,8 +18,9 @@ public class FileIO {
     FileConnection file;
     PrintStream writer;
     
-    public void openFile(String filename) {
+    public boolean openFile(String filename) {
         String url = "file:///" + filename;
+        boolean succeed = false;
         try {
             file = (FileConnection) Connector.open(url);
             if (file.exists()) {
@@ -29,7 +30,11 @@ public class FileIO {
             }
             file.create();
             writer = new PrintStream(file.openOutputStream());
-        }   catch (IOException ex) {}
+            succeed = true;
+        }   catch (IOException ex) {
+                System.out.println("Could not open file");
+            }
+        return succeed;
     }
     
     public void writeToFile(String content) {

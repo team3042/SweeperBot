@@ -5,6 +5,8 @@
  */
 package org.team3042.sweep.commands;
 
+import org.team3042.sweep.SweeperBot;
+
 /**
  *
  * @author NewUser
@@ -19,6 +21,7 @@ public class DriveTrainStop extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        SweeperBot.logger.log("Drive train stop",1);
         driveTrain.stop();
     }
 

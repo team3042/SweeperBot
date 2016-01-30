@@ -32,4 +32,10 @@ public class CorrectPID {
                 
         return (P * e) + (D * de) + (I * E);
     }
+    
+    public void setPID(double p, double i, double d){
+        P = p;
+        I = i;
+        D = d;
+    }
 }

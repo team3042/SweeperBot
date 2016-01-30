@@ -28,11 +28,18 @@ public class SweeperBot extends IterativeRobot {
     private String CALIBRATION_FILE_NAME = "CalibrationFile";
     private double CALIBRATION_MOTOR_SPEED = 0.25;
     private float CALIBRATION_LENGTH_IN_SECONDS = 2;
+    private final int LOGGER_LEVEL = 1;
+    
+    public static Logger logger;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
+        //Creates logger
+        SmartDashboard.putNumber("Logger level", LOGGER_LEVEL);
+        logger = new Logger(true,true,LOGGER_LEVEL);
+        logger.log("Robot init", 1);
         //Initialize the SmartDashboard
         SmartDashboard.putNumber("Calibration Length In Seconds", CALIBRATION_LENGTH_IN_SECONDS);
         SmartDashboard.putString("Calibration File Name", CALIBRATION_FILE_NAME);
@@ -83,10 +90,9 @@ public class SweeperBot extends IterativeRobot {
         LiveWindow.run();
     }
     
-    /*
+    
     public void disabledInit(){
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().disable();
     }
-    */
+    
 }

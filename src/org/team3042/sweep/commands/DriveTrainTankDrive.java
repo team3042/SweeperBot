@@ -7,6 +7,7 @@ package org.team3042.sweep.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team3042.sweep.SweeperBot;
 
 /**
  *
@@ -33,6 +34,8 @@ public class DriveTrainTankDrive extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        SweeperBot.logger.log("Tank drive init",1);
+        
         driveTrain.setMotors(0, 0);
         driveTrain.resetEncoders();
         time.start();
@@ -65,11 +68,14 @@ public class DriveTrainTankDrive extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
+        SweeperBot.logger.log("Tank drive end",1);
+
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        SweeperBot.logger.log("Tank drive interrupt",1);
     }
     
     private double restrictAccel (double goalValue, int SIDE) {
