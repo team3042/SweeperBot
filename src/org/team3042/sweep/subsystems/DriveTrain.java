@@ -29,6 +29,10 @@ public class DriveTrain extends Subsystem {
     //Motor Scaling
     double encoderDistancePerPulse = 1;
     
+    //TODO Determine actual values for these
+    public int encCounts = 1024;
+    public int kF = 1;
+    
     public DriveTrain() {
         leftEncoder.start();
         rightEncoder.start();
