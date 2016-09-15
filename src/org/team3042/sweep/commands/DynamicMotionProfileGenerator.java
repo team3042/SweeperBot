@@ -9,7 +9,7 @@ package org.team3042.sweep.commands;
  *
  * @author Ethan
  */
-public class MotionProfileGenerator {
+public class DynamicMotionProfileGenerator {
     //Current point
     int currentPoint = 0;
 
@@ -20,7 +20,7 @@ public class MotionProfileGenerator {
     double time1, time2;
 
     //Maximum speed in rotations / min
-    double maxVelocity;
+    double startVelocity, endVelocity, maxVelocity;
 
     //Distance traveled in rotations
     double distance;
@@ -46,11 +46,13 @@ public class MotionProfileGenerator {
     //Array with all values of filterSum1
     double[] filterSums1;
 
-    public MotionProfileGenerator(int itp, double time1, double time2, 
-                    double maxVelocity, double distance) {
+    public DynamicMotionProfileGenerator(int itp, double time1, double time2, 
+            double startVelocity, double endVelocity, double maxVelocity, double distance) {
             this.itp = itp;
             this.time1 = time1;
             this.time2 = time2;
+            this.startVelocity = startVelocity;
+            this.endVelocity = endVelocity;
             this.maxVelocity = maxVelocity;
             this.distance = distance;
 

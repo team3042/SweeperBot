@@ -7,6 +7,7 @@ package org.team3042.sweep.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team3042.sweep.SweeperBot;
 
 /**
  *
@@ -147,10 +148,12 @@ public class AutoDrive extends CommandBase {
         double currentLeftError = leftGoalPosition -  driveTrain.getLeftEncoder();
     	double currentRightError = rightGoalPosition - driveTrain.getRightEncoder();
     
-    	double leftSpeed = leftGoalSpeed - P * currentLeftError;
+    	double leftSpeed = leftGoalSpeed + P * currentLeftError;
     	double rightSpeed = rightGoalSpeed + P * currentRightError;
+        
+        System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed);
     	
-    	driveTrain.setMotorsRaw(leftSpeed, rightSpeed);
+    	driveTrain.setMotors(leftSpeed, rightSpeed);
     	
     	double currentTime = timer.get() * 1000;
     	
@@ -170,7 +173,7 @@ public class AutoDrive extends CommandBase {
 
                     //Converting from RPM to a percentage
                     leftGoalSpeed = driveTrain.kF * leftGoalSpeed * driveTrain.encCounts / 1023 / 60;
-                    leftGoalPosition *= driveTrain.encCounts * 4;
+                    leftGoalPosition *= driveTrain.encCounts;
                     break;
                 }
             }
@@ -189,7 +192,7 @@ public class AutoDrive extends CommandBase {
 
                     //Converting from RPM to a percentage
                     rightGoalSpeed = driveTrain.kF * rightGoalSpeed * driveTrain.encCounts / 1023 / 60;
-                    rightGoalPosition *= driveTrain.encCounts * 4;
+                    rightGoalPosition *= driveTrain.encCounts;
                     break;
                 }
             }

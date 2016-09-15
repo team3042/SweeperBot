@@ -4,6 +4,7 @@ package org.team3042.sweep;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.team3042.sweep.commands.AutoDrive;
 import org.team3042.sweep.commands.AutoDriveStraight;
 import org.team3042.sweep.commands.BroomArmRaise;
 import org.team3042.sweep.commands.BroomArmShake;
@@ -22,9 +23,9 @@ public class OI {
     public Joystick stickLeft = new Joystick(  RobotMap.LEFT_JOY_USB_PORT_1);
     public Joystick stickRight = new Joystick(  RobotMap.RIGHT_JOY_USB_PORT_2);
     // Button button = new JoystickButton(stick, buttonNumber);
-    public Button buttonArmRaise = new JoystickButton(stickLeft, 3);
-    public Button buttonArmSweep = new JoystickButton(stickLeft, 4);
-    public Button buttonArmShake = new JoystickButton(stickLeft, 2);
+    public Button buttonArmRaise = new JoystickButton(stickRight, 3);
+    public Button buttonArmSweep = new JoystickButton(stickRight, 4);
+    public Button buttonArmShake = new JoystickButton(stickRight, 2);
     
     public Button lTrigger = new JoystickButton(stickLeft, 1);
     public Button rTrigger = new JoystickButton(stickRight, 1);
@@ -32,6 +33,8 @@ public class OI {
     public Button lb5 = new JoystickButton(stickLeft, 5);
     
     public Button buttonAutoStraight = new JoystickButton(stickLeft, 6);
+    
+    public Button MotionProfileTestButton = new JoystickButton(stickRight, 7);
     
     // Another type of button you can create is a DigitalIOButton, which is
     // a button or switch hooked up to the cypress module. These are useful if
@@ -63,6 +66,8 @@ public class OI {
         buttonArmSweep.whenPressed(new BroomArmSweep());
         lb5.whenPressed(new DriveTrainCalibration());
         buttonAutoStraight.whenPressed(new AutoDriveStraight());
+        
+        MotionProfileTestButton.whenPressed(new AutoDrive(2.5, 3, 0, 0));
     }
 }
 

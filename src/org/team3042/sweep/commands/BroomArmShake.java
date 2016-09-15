@@ -21,7 +21,7 @@ public class BroomArmShake extends CommandBase {
     
     Timer time = new Timer();
     double oldTime = 0;
-    double delay = 0.1;
+    double delay = 0.2;
     double dTime;
    
     // Called just before this Command runs the first time
