@@ -148,10 +148,11 @@ public class AutoDrive extends CommandBase {
         double currentLeftError = leftGoalPosition -  driveTrain.getLeftEncoder();
     	double currentRightError = rightGoalPosition - driveTrain.getRightEncoder();
     
-    	double leftSpeed = leftGoalSpeed + P * currentLeftError;
-    	double rightSpeed = rightGoalSpeed + P * currentRightError;
+    	double leftSpeed = leftGoalSpeed; // + P * currentLeftError;
+    	double rightSpeed = rightGoalSpeed; // + P * currentRightError;
         
-        System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed);
+        System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
+                ",\nRight Position: " + (rightGoalPosition - currentRightError) + ", Right Goal: " + rightGoalPosition + "\n");
     	
     	driveTrain.setMotors(leftSpeed, rightSpeed);
     	
@@ -173,7 +174,7 @@ public class AutoDrive extends CommandBase {
 
                     //Converting from RPM to a percentage
                     leftGoalSpeed = driveTrain.kF * leftGoalSpeed * driveTrain.encCounts / 1023 / 60;
-                    leftGoalPosition *= driveTrain.encCounts;
+                    leftGoalPosition *= driveTrain.encCounts * 10;
                     break;
                 }
             }
@@ -192,7 +193,7 @@ public class AutoDrive extends CommandBase {
 
                     //Converting from RPM to a percentage
                     rightGoalSpeed = driveTrain.kF * rightGoalSpeed * driveTrain.encCounts / 1023 / 60;
-                    rightGoalPosition *= driveTrain.encCounts;
+                    rightGoalPosition *= driveTrain.encCounts * 10;
                     break;
                 }
             }

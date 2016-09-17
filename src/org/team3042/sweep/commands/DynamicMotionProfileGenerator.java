@@ -33,6 +33,10 @@ public class DynamicMotionProfileGenerator {
 
     //Velocity and position at current point
     double currentVelocity = 0, currentPosition = 0, oldVelocity = 0;
+    
+    //Times used when start or end velocities are not zero
+    double timeToMaxVelocity, zeroToMaxTime, startToMaxTime, startMaxTime;
+    double timeToEndVelocity, maxToZeroTime, maxToEndTime, endMaxTime;
 
     //Time to decceleration in ms
     double timeToDeccel;
@@ -56,6 +60,17 @@ public class DynamicMotionProfileGenerator {
             this.maxVelocity = maxVelocity;
             this.distance = distance;
 
+            //Calculating additional time at max velocity due to not starting or ending at zero
+            timeToMaxVelocity = (maxVelocity - startVelocity) / maxVelocity;
+            zeroToMaxTime = maxVelocity * time1 / 2;
+            startToMaxTime = (maxVelocity - startVelocity) * time1 / 2 + startVelocity * time1;
+            startMaxTime = (zeroToMaxTime - timeToMaxVelocity * startToMaxTime) / maxVelocity;
+            
+            timeToEndVelocity = (maxVelocity - endVelocity) / maxVelocity;
+            maxToZeroTime = maxVelocity * time1 / 2;
+            maxToEndTime = (maxVelocity - endVelocity) * time1 / 2 + endVelocity * time1;
+            endMaxTime = (maxToZeroTime - timeToEndVelocity * maxToEndTime) / maxVelocity;
+            
             //Calculating lengths of two stage filter and number of points
             filterLength1 = Math.ceil(time1 / itp);
             filterLength2 = Math.ceil(time2 / itp);

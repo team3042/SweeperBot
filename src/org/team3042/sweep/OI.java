@@ -67,7 +67,7 @@ public class OI {
         lb5.whenPressed(new DriveTrainCalibration());
         buttonAutoStraight.whenPressed(new AutoDriveStraight());
         
-        MotionProfileTestButton.whenPressed(new AutoDrive(2.5, 3, 0, 0));
+        MotionProfileTestButton.whenPressed(new AutoDrive(2.5, 0.5, 0, 0));
     }
 }
 
