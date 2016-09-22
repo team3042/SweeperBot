@@ -75,16 +75,16 @@ public class DynamicMotionProfileGenerator {
             filterLength1 = Math.ceil(time1 / itp);
             filterLength2 = Math.ceil(time2 / itp);
             timeToDeccel = distance / maxVelocity * 1000;
-            totalTime = timeToDeccel + time1 + time2;
+            totalTime = timeToDeccel - time1 - time2 + startToMaxTime + maxToEndTime;
             totalPoints = (int) Math.ceil(totalTime / itp);
             filterSums1 = new double[totalPoints + 1];
     }
 
     private void runFilters() {
         //Running through first filter
-        if (currentPoint * itp < time1) {
+        if (currentPoint * itp < startToMaxTime) {
             //Accelerating filter 1
-            filterSum1 = currentPoint / filterLength1;
+            filterSum1 = currentPoint / filterLength1 + startVelocity / maxVelocity;
         }
         else if (currentPoint >= totalPoints - filterLength2) {
             filterSum1 = 0;
