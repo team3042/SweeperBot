@@ -13,13 +13,13 @@ import org.team3042.sweep.SweeperBot;
  *
  * @author NewUser
  */
-public class AutoDrive extends CommandBase {
+public class AutoDriveAccelerate extends CommandBase {
     
     // Defining types of auto modes
     int STRAIGHT = 0, TURN_LEFT = 1, TURN_RIGHT = 2;
     
     // Constants to be calculated based on length and curve of requested path
-    double leftDistance, rightDistance, leftMinSpeed, leftMaxSpeed, rightMinSpeed, rightMaxSpeed;
+    double leftDistance, rightDistance, leftMaxSpeed, rightMaxSpeed;
     
     // Goal values to be used while the command is running to update the motors
     double leftGoalPosition = 0, leftGoalSpeed = 0, rightGoalPosition = 0, rightGoalSpeed = 0;
@@ -35,7 +35,7 @@ public class AutoDrive extends CommandBase {
 
     double wheelbaseWidth = 2.23;
     
-    DynamicMotionProfileGenerator motionProfileLeft, motionProfileRight;
+    MotionProfileAccelerate motionProfileLeft, motionProfileRight;
     double[][] profileLeft, profileRight;
     
     boolean finished = false;
@@ -50,7 +50,7 @@ public class AutoDrive extends CommandBase {
     //Maximum Acceleration
     //final private double MAX_ACCEL = 0.25 * ((MAINTAIN_SPEED >= 0) ? 1 : -1);
     
-    public AutoDrive(double distance, double minSpeed, double maxSpeed, double radius, int autoType) {
+    public AutoDriveAccelerate(double maxSpeed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(driveTrain);
@@ -68,73 +68,16 @@ public class AutoDrive extends CommandBase {
         innerDistance = outerDistance * innerRadius / outerRadius;
         */
         
-        if(autoType == STRAIGHT) {
-            leftDistance = distance;
-            rightDistance = distance;
-
-            leftMinSpeed = minSpeed;
-            leftMaxSpeed = maxSpeed;
-            rightMinSpeed = minSpeed;
-            rightMaxSpeed = maxSpeed;
-    	}
-    	else if(autoType == TURN_LEFT) {
-            double leftRadius = radius - wheelbaseWidth / 2;
-            double rightRadius = radius + wheelbaseWidth / 2;
-
-            double leftScale, rightScale;
-            //Creating scale for each side in relation to center
-            if(radius != 0) {
-                leftScale = leftRadius / radius;
-                rightScale = rightRadius / radius;
-            }
-            else {
-                leftScale = leftRadius;
-                rightScale = rightRadius;
-            }
-
-            leftScale /= Math.max(leftScale,  rightScale);
-            rightScale /= Math.max(leftScale,  rightScale);
-
-            leftDistance = leftScale * distance;
-            rightDistance = rightScale * distance;
-            leftMinSpeed = leftScale * minSpeed;
-            leftMaxSpeed = leftScale * maxSpeed;
-            rightMinSpeed = rightScale * minSpeed;
-            rightMaxSpeed = rightScale * maxSpeed;
-    	}
-    	else if(autoType == TURN_RIGHT) {
-            double leftRadius = radius + wheelbaseWidth / 2;
-            double rightRadius = radius - wheelbaseWidth / 2;
-
-            double leftScale, rightScale;
-            //Creating scale for each side in relation to center
-            if(radius != 0) {
-                leftScale = leftRadius / radius;
-                rightScale = rightRadius / radius;
-            }
-            else {
-                leftScale = leftRadius;
-                rightScale = rightRadius;
-            }
-
-            leftScale /= Math.max(leftScale,  rightScale);
-            rightScale /= Math.max(leftScale,  rightScale);
-
-            leftDistance = leftScale * distance;
-            rightDistance = rightScale * distance;
-            leftMinSpeed = leftScale * minSpeed;
-            leftMaxSpeed = leftScale * maxSpeed;
-            rightMinSpeed = rightScale * minSpeed;
-            rightMaxSpeed = rightScale * maxSpeed;
-    	}
+        leftMaxSpeed= maxSpeed;
+        rightMaxSpeed = maxSpeed;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
         driveTrain.resetEncoders();
         
-        motionProfileLeft = new DynamicMotionProfileGenerator(itp, time1, time2, leftMinSpeed, leftMaxSpeed, leftDistance);
-        motionProfileRight = new DynamicMotionProfileGenerator(itp, time1, time2, rightMinSpeed, rightMaxSpeed, rightDistance);
+        motionProfileLeft = new MotionProfileAccelerate(itp, time1, time2, leftMaxSpeed);
+        motionProfileRight = new MotionProfileAccelerate(itp, time1, time2, rightMaxSpeed);
     	
     	profileLeft = motionProfileLeft.calculateProfile();
         profileRight = motionProfileRight.calculateProfile();
