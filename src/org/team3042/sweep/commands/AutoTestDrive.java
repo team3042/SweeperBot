@@ -32,5 +32,6 @@ public class AutoTestDrive extends CommandGroup {
         
         addSequential(new AutoDriveAccelerate(0.3));
         addSequential(new AutoDrive(5, .3, 1, 0, 0));
+        addSequential(new AutoDriveDeccelerate(0.3));
     }
 }

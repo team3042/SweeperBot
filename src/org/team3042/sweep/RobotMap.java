@@ -36,6 +36,9 @@ public class RobotMap {
     public static final int RIGHT_ENCODER_A_DIO = 1;
     public static final int RIGHT_ENCODER_B_DIO = 2;
     
+    //Analog Ports
+    public static final int GYRO = 2;
+    
     //Speed of motors in encoder ticks per second at a speed
     //public static final double SPEED_RIGHT = 10;
 }

@@ -6,6 +6,7 @@
 package org.team3042.sweep.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.team3042.sweep.RobotMap;
@@ -24,6 +25,8 @@ public class DriveTrain extends Subsystem {
             RobotMap.LEFT_ENCODER_B_DIO);
     Encoder rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_A_DIO, 
             RobotMap.RIGHT_ENCODER_B_DIO);
+    
+    Gyro gyro = new Gyro(RobotMap.GYRO);
     
     
     //Motor Scaling
@@ -106,6 +109,10 @@ public class DriveTrain extends Subsystem {
     public void resetEncoders(){
         rightEncoder.reset();
         leftEncoder.reset();
+    }
+    
+    public double getGyro() {
+        return gyro.getAngle();
     }
     
     public double scaleLeft(double left){
