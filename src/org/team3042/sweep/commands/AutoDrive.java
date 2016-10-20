@@ -22,8 +22,11 @@ public class AutoDrive extends CommandBase {
     double leftDistance, rightDistance, leftMinSpeed, leftMaxSpeed, rightMinSpeed, rightMaxSpeed;
     
     // Goal values to be used while the command is running to update the motors
-    double leftGoalPosition = 0, leftGoalSpeed = 0, rightGoalPosition = 0, rightGoalSpeed = 0;
-	
+    double leftGoalPosition = 0, leftGoalSpeed = 0, rightGoalPosition = 0, rightGoalSpeed = 0, leftSpeed = 0, rightSpeed = 0;
+    
+    //Type of drive(straight, left, right)
+    int autoType;
+    
     //Current point
     int pointNumber = 0;
 
@@ -68,6 +71,7 @@ public class AutoDrive extends CommandBase {
         outerDistance = distance;
         innerDistance = outerDistance * innerRadius / outerRadius;
         */
+        this.autoType = autoType;
         
         if(autoType == STRAIGHT) {
             leftDistance = distance;
@@ -152,20 +156,30 @@ public class AutoDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	double currentTime = timer.get() * 1000;
+        dT = currentTime - oldTime;
+        oldTime = currentTime;
+        
         double currentLeftError = leftGoalPosition -  driveTrain.getLeftEncoder();
     	double currentRightError = rightGoalPosition - driveTrain.getRightEncoder();
-    
         
+        double leftDistance = leftSpeed * dT;
+        double rightDistance = rightSpeed * dT;
+        double radius;
+        if (autoType == TURN_LEFT) {
+            radius = wheelbaseWidth * leftDistance / (leftDistance - rightDistance);
+        } else if (autoType == TURN_RIGHT) {
+            radius = wheelbaseWidth * leftDistance / (-leftDistance + rightDistance);
+        }
         
-    	double leftSpeed = leftGoalSpeed; // + P * currentLeftError;
-    	double rightSpeed = rightGoalSpeed; // + P * currentRightError;
+    	leftSpeed = leftGoalSpeed; // + P * currentLeftError;
+    	rightSpeed = rightGoalSpeed; // + P * currentRightError;
         
         System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
                 ",\nRight Position: " + (rightGoalPosition - currentRightError) + ", Right Goal: " + rightGoalPosition + "\n");
     	
     	driveTrain.setMotors(leftSpeed, rightSpeed);
     	
-    	double currentTime = timer.get() * 1000;
     	
     	//Interpolating the profile to find the exact current position and velocity
     	if(currentTime <= profileLeft[profileLeft.length - 1][0]) {

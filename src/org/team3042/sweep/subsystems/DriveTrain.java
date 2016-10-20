@@ -44,6 +44,8 @@ public class DriveTrain extends Subsystem {
         rightEncoder.setDistancePerPulse(encoderDistancePerPulse);
         leftEncoder.setReverseDirection(true);
         
+        gyro.reset();
+        gyro.setSensitivity(.007);
     }
     
     public void initDefaultCommand() {
@@ -112,7 +114,7 @@ public class DriveTrain extends Subsystem {
     }
     
     public double getGyro() {
-        return gyro.getAngle();
+        return gyro.getRate();
     }
     
     public double scaleLeft(double left){

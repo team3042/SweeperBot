@@ -58,7 +58,7 @@ public class DriveTrainTankDrive extends CommandBase {
         
         SmartDashboard.putNumber("Left encoder", driveTrain.getLeftEncoder());
         SmartDashboard.putNumber("Right encoder", driveTrain.getRightEncoder());
-        
+        SweeperBot.logger.log("Gyroscope: " + driveTrain.getGyro(), 1);
         
         driveTrain.drive(leftPower, rightPower);
     }
