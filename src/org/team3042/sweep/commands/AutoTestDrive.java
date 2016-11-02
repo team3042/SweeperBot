@@ -31,7 +31,9 @@ public class AutoTestDrive extends CommandGroup {
         // arm.
         
         addSequential(new AutoDriveAccelerate(0.3));
-        addSequential(new AutoDrive(5, .3, 1, 0, 0));
+        addSequential(new AutoDrive(10, .3, 2, 0, 0));
+        addSequential(new AutoDrive(1.65, .3, 1, 2, 1));
+        addSequential(new AutoDrive(10, .3, 2, 0, 0));
         addSequential(new AutoDriveDeccelerate(0.3));
     }
 }
