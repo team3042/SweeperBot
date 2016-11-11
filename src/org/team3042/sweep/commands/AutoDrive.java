@@ -49,7 +49,7 @@ public class AutoDrive extends CommandBase {
     private double oldTime = 0, dT = 0;
     
     //Creating PID values
-    private double P = 0.004, I = 0, D = 0;
+    private double P = 0.004, I = 0, D = 0, pTurn = 0.04;
     
     //Maximum Acceleration
     //final private double MAX_ACCEL = 0.25 * ((MAINTAIN_SPEED >= 0) ? 1 : -1);
@@ -163,17 +163,28 @@ public class AutoDrive extends CommandBase {
         double currentLeftError = leftGoalPosition -  driveTrain.getLeftEncoder();
     	double currentRightError = rightGoalPosition - driveTrain.getRightEncoder();
         
-        double leftDistance = leftSpeed * dT;
-        double rightDistance = rightSpeed * dT;
-        double radius;
+        //Calculating change in angle since last iteration
+        double leftDistance = leftSpeed * dT / 1000;
+        double rightDistance = rightSpeed * dT / 1000;
+        double radius, dTheta;
         if (autoType == TURN_LEFT) {
             radius = wheelbaseWidth * leftDistance / (leftDistance - rightDistance);
+            
+            dTheta = -360 * leftDistance / (2 * Math.PI * radius);
         } else if (autoType == TURN_RIGHT) {
-            radius = wheelbaseWidth * leftDistance / (-leftDistance + rightDistance);
+            radius = wheelbaseWidth * rightDistance / (rightDistance - leftDistance);
+            
+            dTheta = 360 * rightDistance / (2 * Math.PI * radius);
+        } else {
+            dTheta = 0;
         }
+        gyroGoal += dTheta;
         
-    	leftSpeed = leftGoalSpeed; // + P * currentLeftError;
-    	rightSpeed = rightGoalSpeed; // + P * currentRightError;
+        double currentHeading = driveTrain.getGyro();
+        double headingError = gyroGoal - currentHeading;
+        
+    	leftSpeed = leftGoalSpeed; // + P * currentLeftError + pTurn * headingError;
+    	rightSpeed = rightGoalSpeed; // + P * currentRightError - pTurn * headingError;
         
         System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
                 ",\nRight Position: " + (rightGoalPosition - currentRightError) + ", Right Goal: " + rightGoalPosition + "\n");

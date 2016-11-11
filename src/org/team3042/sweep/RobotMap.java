@@ -25,9 +25,9 @@ public class RobotMap {
     public static final int DRIVE_TRAIN_RIGHT_JAGUAR = 2;
     
     //Relays
-    public static final int BROOM_ARM_LOWER_SOLENOID_SPIKE = 1;
+    public static final int BROOM_ARM_LOWER_SOLENOID_SPIKE = 3;
     public static final int BROOM_ARM_UPPER_SOLENOID_SPIKE = 2;
-    public static final int COMPRESSOR_SPIKE = 6;
+    public static final int COMPRESSOR_SPIKE = 5;
     
     //Digital IO Ports
     public static final int COMPRESSOR_PRESSURE_SWITCH_DIO = 10;
