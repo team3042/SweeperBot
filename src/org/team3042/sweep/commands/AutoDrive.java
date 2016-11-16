@@ -40,7 +40,7 @@ public class AutoDrive extends CommandBase {
     
     DynamicMotionProfileGenerator motionProfileLeft, motionProfileRight;
     double[][] profileLeft, profileRight;
-    double gyroGoal = 0;
+    double gyroGoal = 0, currentHeading = 0;
     
     boolean finished = false;
     
@@ -137,6 +137,7 @@ public class AutoDrive extends CommandBase {
     // Called just before this Command runs the first time
     protected void initialize() {
         driveTrain.resetEncoders();
+        driveTrain.resetGyro();
         
         motionProfileLeft = new DynamicMotionProfileGenerator(itp, time1, time2, leftMinSpeed, leftMaxSpeed, leftDistance);
         motionProfileRight = new DynamicMotionProfileGenerator(itp, time1, time2, rightMinSpeed, rightMaxSpeed, rightDistance);
@@ -168,27 +169,33 @@ public class AutoDrive extends CommandBase {
         double rightDistance = rightSpeed * dT / 1000;
         double radius, dTheta;
         if (autoType == TURN_LEFT) {
-            radius = wheelbaseWidth * leftDistance / (leftDistance - rightDistance);
+            radius = (leftDistance == rightDistance)? 10000000 : wheelbaseWidth * leftDistance / (leftDistance - rightDistance);
             
-            dTheta = -360 * leftDistance / (2 * Math.PI * radius);
+            dTheta = 360 * leftDistance / (2 * Math.PI * radius);
         } else if (autoType == TURN_RIGHT) {
-            radius = wheelbaseWidth * rightDistance / (rightDistance - leftDistance);
+            radius = (leftDistance == rightDistance)? 10000000 : wheelbaseWidth * rightDistance / (rightDistance - leftDistance);
             
-            dTheta = 360 * rightDistance / (2 * Math.PI * radius);
+            dTheta = -360 * rightDistance / (2 * Math.PI * radius);
         } else {
+            radius = 10000000;
+            
             dTheta = 0;
         }
-        gyroGoal += dTheta;
+        gyroGoal += dTheta * 3.6;
         
-        double currentHeading = driveTrain.getGyro();
+        double oldHeading = currentHeading;
+        currentHeading = driveTrain.getGyro();
         double headingError = gyroGoal - currentHeading;
         
-    	leftSpeed = leftGoalSpeed; // + P * currentLeftError + pTurn * headingError;
-    	rightSpeed = rightGoalSpeed; // + P * currentRightError - pTurn * headingError;
+        System.out.println("Gyro Actual: " + leftSpeed + ", Gyro Goal: " + (leftGoalSpeed + pTurn * headingError) + "\n\n");
         
-        System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
+        
+    	leftSpeed = leftGoalSpeed + pTurn * headingError; // + P * currentLeftError + pTurn * headingError;
+    	rightSpeed = rightGoalSpeed - pTurn * headingError; // + P * currentRightError - pTurn * headingError;
+        
+        /*System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
                 ",\nRight Position: " + (rightGoalPosition - currentRightError) + ", Right Goal: " + rightGoalPosition + "\n");
-    	
+    	*/
     	driveTrain.setMotors(leftSpeed, rightSpeed);
     	
     	

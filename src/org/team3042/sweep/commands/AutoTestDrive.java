@@ -30,10 +30,10 @@ public class AutoTestDrive extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
         
-        addSequential(new AutoDriveAccelerate(0.3));
-        addSequential(new AutoDrive(10, .3, 2, 0, 0));
-        addSequential(new AutoDrive(1.65, .3, 1, 2, 1));
-        addSequential(new AutoDrive(10, .3, 2, 0, 0));
-        addSequential(new AutoDriveDeccelerate(0.3));
+        //addSequential(new AutoDriveAccelerate(0.3));
+        addSequential(new AutoDrive(1.7, 0, 0.5, 0, 0));
+        //addSequential(new AutoDrive(1.5, 0, 0.5, 2, 1));
+        //addSequential(new AutoDrive(10, .3, 2, 0, 0));
+        //addSequential(new AutoDriveDeccelerate(0.3));
     }
 }

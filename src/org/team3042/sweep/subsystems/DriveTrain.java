@@ -112,6 +112,10 @@ public class DriveTrain extends Subsystem {
         leftEncoder.reset();
     }
     
+    public void resetGyro() {
+        gyro.reset();
+    }
+    
     public double getGyro() {
         return gyro.getAngle();
     }
