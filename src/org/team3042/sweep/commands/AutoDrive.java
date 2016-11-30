@@ -40,7 +40,7 @@ public class AutoDrive extends CommandBase {
     
     DynamicMotionProfileGenerator motionProfileLeft, motionProfileRight;
     double[][] profileLeft, profileRight;
-    double gyroGoal = 0, currentHeading = 0;
+    double gyroGoal = 0, currentHeading = 0, headingError = 0, sumHeadingError = 0;
     
     boolean finished = false;
     
@@ -49,7 +49,7 @@ public class AutoDrive extends CommandBase {
     private double oldTime = 0, dT = 0;
     
     //Creating PID values
-    private double P = 0.004, I = 0, D = 0, pTurn = 0.04;
+    private double P = 0.004, I = 0, D = 0, pTurn = 0.05, iTurn = 0.0000, dTurn = 0.000;
     
     //Maximum Acceleration
     //final private double MAX_ACCEL = 0.25 * ((MAINTAIN_SPEED >= 0) ? 1 : -1);
@@ -81,6 +81,10 @@ public class AutoDrive extends CommandBase {
             leftMaxSpeed = maxSpeed;
             rightMinSpeed = minSpeed;
             rightMaxSpeed = maxSpeed;
+            
+            pTurn = 0.05;
+            iTurn = 0;
+            dTurn = 0;
     	}
     	else if(autoType == TURN_LEFT) {
             double leftRadius = radius - wheelbaseWidth / 2;
@@ -106,6 +110,10 @@ public class AutoDrive extends CommandBase {
             leftMaxSpeed = leftScale * maxSpeed;
             rightMinSpeed = rightScale * minSpeed;
             rightMaxSpeed = rightScale * maxSpeed;
+            
+            pTurn = 0.006;
+            iTurn = 0.00001;
+            dTurn = 0.0001;
     	}
     	else if(autoType == TURN_RIGHT) {
             double leftRadius = radius + wheelbaseWidth / 2;
@@ -131,6 +139,10 @@ public class AutoDrive extends CommandBase {
             leftMaxSpeed = leftScale * maxSpeed;
             rightMinSpeed = rightScale * minSpeed;
             rightMaxSpeed = rightScale * maxSpeed;
+            
+            pTurn = 0.006;
+            iTurn = 0.00001;
+            dTurn = 0.0001;
     	}
     }
 
@@ -138,6 +150,7 @@ public class AutoDrive extends CommandBase {
     protected void initialize() {
         driveTrain.resetEncoders();
         driveTrain.resetGyro();
+        gyroGoal = 0;
         
         motionProfileLeft = new DynamicMotionProfileGenerator(itp, time1, time2, leftMinSpeed, leftMaxSpeed, leftDistance);
         motionProfileRight = new DynamicMotionProfileGenerator(itp, time1, time2, rightMinSpeed, rightMaxSpeed, rightDistance);
@@ -181,17 +194,21 @@ public class AutoDrive extends CommandBase {
             
             dTheta = 0;
         }
-        gyroGoal += dTheta * 3.6;
+        gyroGoal += dTheta * 3;
         
-        double oldHeading = currentHeading;
+        double oldHeadingError = headingError;
         currentHeading = driveTrain.getGyro();
-        double headingError = gyroGoal - currentHeading;
+        headingError = gyroGoal - currentHeading;
+        sumHeadingError += headingError;
+        double dHeadingError = headingError - oldHeadingError;
         
-        System.out.println("Gyro Actual: " + leftSpeed + ", Gyro Goal: " + (leftGoalSpeed + pTurn * headingError) + "\n\n");
+        System.out.println("Gyro Actual: " + currentHeading + ", Gyro Goal: " + gyroGoal + "\n\n");
         
         
-    	leftSpeed = leftGoalSpeed + pTurn * headingError; // + P * currentLeftError + pTurn * headingError;
-    	rightSpeed = rightGoalSpeed - pTurn * headingError; // + P * currentRightError - pTurn * headingError;
+    	leftSpeed = leftGoalSpeed + pTurn * headingError + dTurn * dHeadingError +
+                iTurn * sumHeadingError; // + P * currentLeftError;
+    	rightSpeed = rightGoalSpeed - pTurn * headingError - dTurn * dHeadingError -
+                iTurn * sumHeadingError; // + P * currentRightError;
         
         /*System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
                 ",\nRight Position: " + (rightGoalPosition - currentRightError) + ", Right Goal: " + rightGoalPosition + "\n");

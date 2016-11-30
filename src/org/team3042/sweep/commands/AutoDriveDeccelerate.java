@@ -98,9 +98,9 @@ public class AutoDriveDeccelerate extends CommandBase {
     	double leftSpeed = leftGoalSpeed; // + P * currentLeftError;
     	double rightSpeed = rightGoalSpeed; // + P * currentRightError;
         
-        System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
+        /*System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
                 ",\nRight Position: " + (rightGoalPosition - currentRightError) + ", Right Goal: " + rightGoalPosition + "\n");
-    	
+    	*/
     	driveTrain.setMotors(leftSpeed, rightSpeed);
     	
     	double currentTime = timer.get() * 1000;

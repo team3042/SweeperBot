@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  * @author NewUser
  */
-public class AutoTestDrive extends CommandGroup {
+public class AutoTurnAround extends CommandGroup {
     
-    public AutoTestDrive() {
+    public AutoTurnAround() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -30,10 +30,6 @@ public class AutoTestDrive extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
         
-        addSequential(new AutoDriveAccelerate(0.3));
-        addSequential(new AutoDrive(10, .3, 1.5, 0, 0));
         addSequential(new AutoDrive(2, .3, 1, 1.2, 1));
-        addSequential(new AutoDrive(10, .3, 1.5, 0, 0));
-        addSequential(new AutoDriveDeccelerate(0.3));
     }
 }
