@@ -27,6 +27,7 @@ public class DriveTrain extends Subsystem {
             RobotMap.RIGHT_ENCODER_B_DIO);
     
     Gyro gyro = new Gyro(RobotMap.GYRO);
+    double gyroGoal = 0;
     
     
     //Motor Scaling
@@ -114,10 +115,19 @@ public class DriveTrain extends Subsystem {
     
     public void resetGyro() {
         gyro.reset();
+        gyroGoal = 0;
     }
     
     public double getGyro() {
         return gyro.getAngle();
+    }
+    
+    public double getGyroGoal() {
+        return gyroGoal;
+    }
+    
+    public void setGyroGoal(double newGoal) {
+        gyroGoal = newGoal;
     }
     
     public double scaleLeft(double left){
