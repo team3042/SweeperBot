@@ -149,6 +149,7 @@ public class AutoDrive extends CommandBase {
     // Called just before this Command runs the first time
     protected void initialize() {
         driveTrain.resetEncoders();
+        //driveTrain.resetGyro();
         
         motionProfileLeft = new DynamicMotionProfileGenerator(itp, time1, time2, leftMinSpeed, leftMaxSpeed, leftDistance);
         motionProfileRight = new DynamicMotionProfileGenerator(itp, time1, time2, rightMinSpeed, rightMaxSpeed, rightDistance);
