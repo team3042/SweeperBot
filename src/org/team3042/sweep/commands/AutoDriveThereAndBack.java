@@ -30,13 +30,11 @@ public class AutoDriveThereAndBack extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
         
-        addSequential(new AutoDriveAccelerate(0.3));
         addSequential(new DriveTrainSetGyroGoal(0));
-        addSequential(new AutoDrive(10, .3, 1.5, 0, 0));
+        addSequential(new AutoDrive(3.5, .3, 0.9, 0, 0)); 
         // WHEN UPDATING TURN PARAMETERS ALSO UPDATE IN AutoTurnAround!
-        addSequential(new AutoDrive(2, .3, 1, 1.2, 1));
-        addSequential(new DriveTrainSetGyroGoal(180));
-        addSequential(new AutoDrive(10, .3, 1.5, 0, 0));
-        addSequential(new AutoDriveDeccelerate(0.3));
+        addSequential(new AutoDrive(1.8, .3, 1, 1.2, 1)); 
+        addSequential(new DriveTrainSetGyroGoal(-180));
+        addSequential(new AutoDrive(3.5, .3, 0.9, 0, 0)); 
     }
 }

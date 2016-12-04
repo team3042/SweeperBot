@@ -82,9 +82,9 @@ public class AutoDrive extends CommandBase {
             rightMinSpeed = minSpeed;
             rightMaxSpeed = maxSpeed;
             
-            pTurn = 0.05;
-            iTurn = 0;
-            dTurn = 0;
+            pTurn = 0.08;
+            iTurn = 0.0032;
+            dTurn = 0.15;
     	}
     	else if(autoType == TURN_LEFT) {
             double leftRadius = radius - wheelbaseWidth / 2;
@@ -113,7 +113,7 @@ public class AutoDrive extends CommandBase {
             
             pTurn = 0.006;
             iTurn = 0.00001;
-            dTurn = 0.0001;
+            dTurn = 0.0016;
     	}
     	else if(autoType == TURN_RIGHT) {
             double leftRadius = radius + wheelbaseWidth / 2;

@@ -32,6 +32,7 @@ public class AutoSweepGym extends CommandGroup {
         
         addSequential(new DriveTrainResetGyro());
         
+        addSequential(new AutoDriveAccelerate(0.3));
         double initialPasses = 1;
         for(int i = 1; i <= initialPasses; i++) {
             addSequential(new AutoDriveThereAndBack());
@@ -39,6 +40,19 @@ public class AutoSweepGym extends CommandGroup {
                 addSequential(new AutoTurnAround());
             }
         }
-        //TODO: add shake and second set of passes
+        /*
+        addSequential(new AutoDrive(2, .3, 0.5, 0, 0));
+        addSequential(new BroomArmShakeTimed(5));
+        addSequential(new AutoDrive(-2, .3, -0.5, 0, 0));
+        
+        double secondPasses = 1;
+        for(int i = 1; i <= secondPasses; i++) {
+            addSequential(new AutoDriveThereAndBack());
+            if(i != secondPasses) {
+                //addSequential(new AutoTurnAround());
+            }
+        }
+        */
+        addSequential(new AutoDriveDeccelerate(0.3));
     }
 }
