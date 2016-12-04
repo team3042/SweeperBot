@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.team3042.sweep.commands.AutoDriveStraight;
-import org.team3042.sweep.commands.AutoTestDrive;
+import org.team3042.sweep.commands.AutoSweepGym;
 import org.team3042.sweep.commands.BroomArmRaise;
 import org.team3042.sweep.commands.BroomArmShake;
 import org.team3042.sweep.commands.BroomArmSweep;
@@ -67,7 +67,7 @@ public class OI {
         lb5.whenPressed(new DriveTrainCalibration());
         buttonAutoStraight.whenPressed(new AutoDriveStraight());
         
-        MotionProfileTestButton.whenPressed(new AutoTestDrive());
+        MotionProfileTestButton.whenPressed(new AutoSweepGym());
     }
 }
 

@@ -40,7 +40,7 @@ public class AutoDrive extends CommandBase {
     
     DynamicMotionProfileGenerator motionProfileLeft, motionProfileRight;
     double[][] profileLeft, profileRight;
-    double gyroGoal = 0, currentHeading = 0, headingError = 0, sumHeadingError = 0;
+    double currentHeading = 0, headingError = 0, sumHeadingError = 0;
     
     boolean finished = false;
     
@@ -149,8 +149,6 @@ public class AutoDrive extends CommandBase {
     // Called just before this Command runs the first time
     protected void initialize() {
         driveTrain.resetEncoders();
-        driveTrain.resetGyro();
-        gyroGoal = 0;
         
         motionProfileLeft = new DynamicMotionProfileGenerator(itp, time1, time2, leftMinSpeed, leftMaxSpeed, leftDistance);
         motionProfileRight = new DynamicMotionProfileGenerator(itp, time1, time2, rightMinSpeed, rightMaxSpeed, rightDistance);
@@ -194,21 +192,21 @@ public class AutoDrive extends CommandBase {
             
             dTheta = 0;
         }
-        gyroGoal += dTheta * 3;
+        driveTrain.setGyroGoal(driveTrain.getGyroGoal() + dTheta * 3);
         
         double oldHeadingError = headingError;
         currentHeading = driveTrain.getGyro();
-        headingError = gyroGoal - currentHeading;
+        headingError = driveTrain.getGyroGoal() - currentHeading;
         sumHeadingError += headingError;
         double dHeadingError = headingError - oldHeadingError;
         
-        System.out.println("Gyro Actual: " + currentHeading + ", Gyro Goal: " + gyroGoal + "\n\n");
+        System.out.println("Gyro Actual: " + currentHeading + ", Gyro Goal: " + driveTrain.getGyroGoal() + "\n\n");
         
         
     	leftSpeed = leftGoalSpeed + pTurn * headingError + dTurn * dHeadingError +
                 iTurn * sumHeadingError; // + P * currentLeftError;
-    	rightSpeed = rightGoalSpeed - pTurn * headingError - dTurn * dHeadingError -
-                iTurn * sumHeadingError; // + P * currentRightError;
+    	rightSpeed = rightGoalSpeed - (pTurn * headingError + dTurn * dHeadingError +
+                iTurn * sumHeadingError); // + P * currentRightError;
         
         /*System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
                 ",\nRight Position: " + (rightGoalPosition - currentRightError) + ", Right Goal: " + rightGoalPosition + "\n");
