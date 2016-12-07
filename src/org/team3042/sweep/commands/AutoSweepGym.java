@@ -33,7 +33,7 @@ public class AutoSweepGym extends CommandGroup {
         addSequential(new DriveTrainResetGyro());
         
         addSequential(new AutoDriveAccelerate(0.3));
-        double initialPasses = 1;
+        double initialPasses = 2;
         for(int i = 1; i <= initialPasses; i++) {
             addSequential(new AutoDriveThereAndBack());
             if(i != initialPasses) {

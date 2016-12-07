@@ -177,8 +177,8 @@ public class AutoDrive extends CommandBase {
     	double currentRightError = rightGoalPosition - driveTrain.getRightEncoder();
         
         //Calculating change in angle since last iteration
-        double leftDistance = leftSpeed * dT / 1000;
-        double rightDistance = rightSpeed * dT / 1000;
+        double leftDistance = leftGoalSpeed * dT / 1000;
+        double rightDistance = rightGoalSpeed * dT / 1000;
         double radius, dTheta;
         if (autoType == TURN_LEFT) {
             radius = (leftDistance == rightDistance)? 10000000 : wheelbaseWidth * leftDistance / (leftDistance - rightDistance);
@@ -194,6 +194,8 @@ public class AutoDrive extends CommandBase {
             dTheta = 0;
         }
         driveTrain.setGyroGoal(driveTrain.getGyroGoal() + dTheta * 3);
+        
+        System.out.println("Left Distance: " + leftDistance + ", Right Distance: " + rightDistance + ", Radius: " + radius + ", dTheta: " + dTheta);
         
         double oldHeadingError = headingError;
         currentHeading = driveTrain.getGyro();
