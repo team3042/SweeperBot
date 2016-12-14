@@ -37,6 +37,8 @@ public class DriveTrain extends Subsystem {
     public int encCounts = 360;
     public double kF = 2.94;
     
+    private boolean isMotionProfilePaused = false;
+    
     public DriveTrain() {
         leftEncoder.start();
         rightEncoder.start();
@@ -143,5 +145,13 @@ public class DriveTrain extends Subsystem {
         double encoder = (motorPower > .2) ? 4404*(motorPower - 0.165): 0;
                 
         return encoder;
+    }
+    
+    public boolean isProfilePaused() {
+        return isMotionProfilePaused;
+    }
+    
+    public void setProfilePaused(boolean paused) {
+        isMotionProfilePaused = paused;
     }
 }

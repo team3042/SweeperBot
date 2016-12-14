@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class AutoDriveThereAndBack extends CommandGroup {
     
-    public AutoDriveThereAndBack() {
+    public AutoDriveThereAndBack(int pass) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -29,11 +29,17 @@ public class AutoDriveThereAndBack extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+        double courtLength = 8.2;
+        if(pass != 1) {
+            courtLength -= .3;
+        }
         
-        double courtLength = 6;
-        
-        addSequential(new DriveTrainSetGyroGoal(0)); 
+        addSequential(new DriveTrainSetGyroGoal(1.5));
         addSequential(new AutoDrive(courtLength, .3, 1.2, 0, 0)); 
+        
+        if(pass == 1) {
+            courtLength -= .3;
+        }
         
         // WHEN UPDATING TURN PARAMETERS ALSO UPDATE IN AutoTurnAround! 
         
