@@ -269,6 +269,11 @@ public class AutoDrive extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
+        System.out.println("Left Actual: " + driveTrain.getLeftEncoder() + ", Left Goal: " + leftGoalPosition + ", Left Ratio: " + 
+                (leftGoalPosition / driveTrain.getLeftEncoder()) + "\n");
+        System.out.println("Right Actual: " + driveTrain.getRightEncoder() + ", Right Goal: " + rightGoalPosition + ", Right Ratio: " + 
+                (rightGoalPosition / driveTrain.getRightEncoder()) + "\n");
+        
         driveTrain.setMotorsRaw(0, 0);
     }
 
