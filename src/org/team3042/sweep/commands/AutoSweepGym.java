@@ -37,12 +37,12 @@ public class AutoSweepGym extends CommandGroup {
         double courtLength = 6;
         double[][] driveLengths = new double[initialPasses][2];
         for(int i = 0; i < initialPasses; i++) {
-            driveLengths[i][1] = (i == 0)? courtLength : courtLength - 0.3;
-            driveLengths[i][2] = 0; //courtLength - 0.3;
+            driveLengths[i][0] = (i == 0)? courtLength : courtLength - 0.3;
+            driveLengths[i][1] = courtLength - 0.3;
         }
         
         for(int i = 1; i <= initialPasses; i++) {
-            addSequential(new AutoDriveThereAndBack(driveLengths[i][1], driveLengths[i][2]));
+            addSequential(new AutoDriveThereAndBack(driveLengths[i - 1][0], driveLengths[i - 1][1]));
             if(i != initialPasses) {
                 addSequential(new AutoTurnAround());
             }

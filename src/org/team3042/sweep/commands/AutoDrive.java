@@ -40,7 +40,7 @@ public class AutoDrive extends CommandBase {
     
     DynamicMotionProfileGenerator motionProfileLeft, motionProfileRight;
     double[][] profileLeft, profileRight;
-    double currentHeading = 0, headingError = 0, sumHeadingError = 0;
+    double currentError = 0, sumCurrentError = 0, currentHeading = 0, headingError = 0, sumHeadingError = 0;
     
     boolean finished = false;
     
@@ -49,7 +49,7 @@ public class AutoDrive extends CommandBase {
     private double oldTime = 0, dT = 0;
     
     //Creating PID values
-    private double P = 0.004, I = 0, D = 0, pTurn = 0.05, iTurn = 0.0000, dTurn = 0.000;
+    private double P = 0.006, I = 0, D = 0.00, pTurn = 0.06, iTurn = 0.01, dTurn = 0.000;
     
     //Maximum Acceleration
     //final private double MAX_ACCEL = 0.25 * ((MAINTAIN_SPEED >= 0) ? 1 : -1);
@@ -144,6 +144,12 @@ public class AutoDrive extends CommandBase {
             iTurn = 0.00001;
             dTurn = 0.0001;
     	}
+        
+        currentError = 0;
+        sumCurrentError = 0;
+        currentHeading = 0;
+        headingError = 0;
+        sumHeadingError = 0;
     }
 
     // Called just before this Command runs the first time
@@ -162,6 +168,12 @@ public class AutoDrive extends CommandBase {
     	leftGoalSpeed = 0;
         rightGoalPosition = 0;
     	rightGoalSpeed = 0;
+        
+        currentError = 0;
+        sumCurrentError = 0;
+        currentHeading = 0;
+        headingError = 0;
+        sumHeadingError = 0;
     	
     	timer.reset();
     	timer.start();
@@ -173,8 +185,11 @@ public class AutoDrive extends CommandBase {
         dT = currentTime - oldTime;
         oldTime = currentTime;
         
-        double currentLeftError = leftGoalPosition -  driveTrain.getLeftEncoder();
-    	double currentRightError = rightGoalPosition - driveTrain.getRightEncoder();
+        //double currentLeftError = leftGoalPosition -  driveTrain.getLeftEncoder();
+        double oldCurrentError = currentError;
+    	currentError = rightGoalPosition - (-2.3) * driveTrain.getRightEncoder();
+        sumCurrentError += currentError;
+        double dCurrentError = currentError - oldCurrentError;
         
         //Calculating change in angle since last iteration
         double leftDistance = leftGoalSpeed * dT / 1000;
@@ -195,7 +210,7 @@ public class AutoDrive extends CommandBase {
         }
         driveTrain.setGyroGoal(driveTrain.getGyroGoal() + dTheta * 3);
         
-        System.out.println("Left Distance: " + leftDistance + ", Right Distance: " + rightDistance + ", Radius: " + radius + ", dTheta: " + dTheta);
+        //System.out.println("Left Distance: " + leftDistance + ", Right Distance: " + rightDistance + ", Radius: " + radius + ", dTheta: " + dTheta);
         
         double oldHeadingError = headingError;
         currentHeading = driveTrain.getGyro();
@@ -207,9 +222,9 @@ public class AutoDrive extends CommandBase {
         
         
     	leftSpeed = leftGoalSpeed + pTurn * headingError + dTurn * dHeadingError +
-                iTurn * sumHeadingError; // + P * currentLeftError;
+                iTurn * sumHeadingError - ((autoType != STRAIGHT)? 0 : P * currentError  + I * sumCurrentError + D * dCurrentError);
     	rightSpeed = rightGoalSpeed - (pTurn * headingError + dTurn * dHeadingError +
-                iTurn * sumHeadingError); // + P * currentRightError;
+                iTurn * sumHeadingError) - ((autoType != STRAIGHT)? 0 : P * currentError  + I * sumCurrentError + D * dCurrentError);
         
         /*System.out.println("Left Speed: " + leftSpeed + ", Right Speed: " + rightSpeed +
                 ",\nRight Position: " + (rightGoalPosition - currentRightError) + ", Right Goal: " + rightGoalPosition + "\n");
@@ -269,10 +284,8 @@ public class AutoDrive extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
-        System.out.println("Left Actual: " + driveTrain.getLeftEncoder() + ", Left Goal: " + leftGoalPosition + ", Left Ratio: " + 
-                (leftGoalPosition / driveTrain.getLeftEncoder()) + "\n");
-        System.out.println("Right Actual: " + driveTrain.getRightEncoder() + ", Right Goal: " + rightGoalPosition + ", Right Ratio: " + 
-                (rightGoalPosition / driveTrain.getRightEncoder()) + "\n");
+        System.out.println("Right Actual: " + (-2.3) * driveTrain.getRightEncoder() + ", Right Goal: " + rightGoalPosition + ", Right Ratio: " + 
+                (rightGoalPosition / ((-2.3) * driveTrain.getRightEncoder())) + "\n");
         
         driveTrain.setMotorsRaw(0, 0);
     }

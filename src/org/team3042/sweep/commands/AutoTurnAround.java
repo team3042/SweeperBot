@@ -30,6 +30,6 @@ public class AutoTurnAround extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
         
-        addSequential(new AutoDrive(1.4, .3, 1, 1.2, 2));
+        addSequential(new AutoDrive(1.52, .3, 1, 1.33, 2));
     }
 }

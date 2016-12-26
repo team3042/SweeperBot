@@ -97,7 +97,7 @@ public class MotionProfileAccelerate {
                     trajectory[i][0] = currentTime;
                     trajectory[i][1] = currentPosition;
                     trajectory[i][2] = currentVelocity * 60;
-                    System.out.println(currentTime + ": Position: " + currentPosition + ", Velocity: " + currentVelocity);
+                    //System.out.println(currentTime + ": Position: " + currentPosition + ", Velocity: " + currentVelocity);
 
                     currentTime += itp;
                     currentPoint++;

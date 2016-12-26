@@ -35,11 +35,11 @@ public class AutoDriveThereAndBack extends CommandGroup {
         addSequential(new AutoDrive(downLength, .3, 1.2, 0, 0)); 
         
         // WHEN UPDATING TURN PARAMETERS ALSO UPDATE IN AutoTurnAround! 
-        
+        /*
         addSequential(new AutoDrive(1.6, .3, 1, 1.4, 1));
         
         addSequential(new DriveTrainSetGyroGoal(-176));
         addSequential(new AutoDrive(backLength, .3, 1.2, 0, 0)); 
-              
+              */
     }
 }
