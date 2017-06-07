@@ -29,17 +29,19 @@ public class BroomArmShake extends CommandBase {
         broomArm.raise();
         oldTime = 0;
         time.start();
+        broomArm.toggleShake();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        /*
         double currentTime = time.get();
         dTime = currentTime - oldTime;
         if(dTime > delay) {
             broomArm.toggleShake();
             oldTime = currentTime;
         }
-        
+        */
     }
 
     // Make this return true when this Command no longer needs to run execute()

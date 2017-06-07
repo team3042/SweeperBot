@@ -222,7 +222,7 @@ public class AutoDrive extends CommandBase {
         
         
     	leftSpeed = leftGoalSpeed + pTurn * headingError + dTurn * dHeadingError +
-                iTurn * sumHeadingError - ((autoType != STRAIGHT)? 0 : P * currentError  + I * sumCurrentError + D * dCurrentError);
+                iTurn * sumHeadingError;
     	rightSpeed = rightGoalSpeed - (pTurn * headingError + dTurn * dHeadingError +
                 iTurn * sumHeadingError) - ((autoType != STRAIGHT)? 0 : P * currentError  + I * sumCurrentError + D * dCurrentError);
         
